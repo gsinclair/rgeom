@@ -26,7 +26,9 @@ AUDIENCE
   in order to use it.  That said, this project is designed to scratch my own
   itch.  If nobody else shares that itch, so be it.
 
-  Potential users are encouraged to become familiar with the other 
+  Potential users are encouraged to become familiar with the other software
+  packages mentioned above.  They are mature and may meet your needs
+  better.
 
 
 EXAMPLES
@@ -61,6 +63,60 @@ STATUS
   Over the Christmas holidays, several features (dots, labels, segment marks,
   angle marks) will hopefully be introduced and a proper release will
   hopefully occur.
+
+
+FILES AND DIRECTORIES
+
+  etc/
+    Scripts for editing code, editing tests, and running tests.
+    Aliases that are useful for this project.
+
+  html-demo/
+    Example code and descriptions used to create an HTML file
+    with lots of pretty pictures and stuff.  Run
+      ruby -Ilib html-demo/generate.rb
+    to generate the file, and browse html-demo/index.html to
+    see the result.
+
+  lib/
+    The RGeom library code.
+
+  out/
+    A directory into which unit tests can generate images.  These
+    may be safely deleted at any time.
+
+  test/
+    Unit tests.
+
+
+USAGE
+
+    require 'rgeom'
+    # RGeom code goes here, to define points, segments, triangles, etc.
+    render 'filename.png'
+
+  See the html-demo code for examples of RGeom code.
+
+
+DEPENDENCIES
+
+  All dependencies can be installed via Rubygems.
+
+  In RGeom itself:
+   * extensions
+   * fattr
+   * ruby-debug       [1]
+   * dev-utils        [1]
+   * term-ansicolor
+   * facets
+
+  [1] These are for debugging; if debugging code is removed, these
+      dependencies are no longer required.
+
+  To generate the HTML examples (in addition to the above):
+   * rio
+   * builder
+   * coderay
 
 
 AUTHOR AND LICENSE
