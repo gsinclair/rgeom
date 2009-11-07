@@ -1,0 +1,5 @@
+triangle(:ABC)
+points :M => midpoint(:AB), :N => midpoint(:BC), :O => midpoint(:CA)
+segment(:AN)
+segment(:BO)
+segment(:CM)

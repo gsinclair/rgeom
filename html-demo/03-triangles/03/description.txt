@@ -1,0 +1,4 @@
+h: Medians of a triangle (anonymous points)
+
+We construct the medians of a triangle again, but this time we don't name the
+midpoints of each side.

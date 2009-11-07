@@ -1,0 +1,4 @@
+h: Extending segments
+
+Here we create a triangle, extend its base, and join the extended point to the
+apex.

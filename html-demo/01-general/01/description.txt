@@ -1,0 +1,6 @@
+h: Frame of reference
+
+The next three examples will demonstrate how RGeom zooms in to the diagram.
+
+The triangle in this example is created near the origin and has a base of 5
+units (the default).

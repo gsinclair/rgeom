@@ -1,0 +1,7 @@
+h: Various triangle constructions
+
+We can create all sorts of triangles using natural specifications.
+
+The vertices of a triangle (any shape, really) are constructed in anti-clockwise
+order.  So if A and B are defined, then triangle(:ABC) will be different from
+triangle(:BAC).

@@ -1,0 +1,10 @@
+h: Generating a spiral of right-angled triangles
+
+The <b>Shape.generate</b> function allows us to build any number of shapes, each
+based on the previous one.
+
+In this case, the hypotenuse of one triangle forms the base of the next one.
+
+The hypotenuses have length sqrt(2), sqrt(3), sqrt(4), ...
+
+Inspired by NCM

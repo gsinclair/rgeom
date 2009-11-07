@@ -1,0 +1,2 @@
+'out' is a place for unit tests to create output files (PNGs).  The contents may
+be safely deleted at any time.

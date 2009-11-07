@@ -1,0 +1,73 @@
+NAME
+
+  RGeom: Ruby-driven geometrically-aware mathematical diagram tool
+
+
+DESCRIPTION
+
+  RGeom is a programming language (really a Ruby DSL) for generating
+  mathematical diagrams.  It's inspired mainly by Eukleides and Asymptote,
+  and also TikZ.
+
+  Eukleides is not powerful enough (need to specify every point, no looping
+  constructs) and the others are too low-level for my liking.  They produce
+  beautiful vector diagrams in LaTeX documents with a certain degree of
+  effort, but I want to produce images for use in Microsoft Word, easily.
+
+
+AUDIENCE
+
+  Anyone interested in generating mathematical diagrams easily.  However, see
+  'Status' below.
+
+  Ruby is the implementation language.  Users of this software would benefit
+  from a little familiarity with Ruby.  The aim is to make the package so
+  compelling that people would consider it worthwhile learning a little Ruby
+  in order to use it.  That said, this project is designed to scratch my own
+  itch.  If nobody else shares that itch, so be it.
+
+  Potential users are encouraged to become familiar with the other 
+
+
+EXAMPLES
+
+  This code would produce a right-angled triangle with a square on each side,
+  suitable for demonstrating the Pythagorean Theorem.
+
+    require 'rgeom'
+
+    triangle :ABC, :right_angle => :A, :base => 5, :height => 2.7
+    square :base => :BA
+    square :base => :CB
+    square :base => :AC
+    mark_right_angle :CAB
+
+    render 'pythagoras.png'
+
+  Only the 'triangle' and 'render' commands of that code work at the moment,
+  but 'square' will be trivially implemented soon.  'mark_right_angle' may
+  have to wait a while.
+
+  Some examples that actually work can be seen in the 'html-demo' directory
+  by opening 'index.html'.
+
+
+STATUS
+
+  I'm a high school teacher and can only work on this in my holidays.  At the
+  moment (Nov 2009), RGeom can generate triangles (based on many sorts of
+  specifications), circles (likewise) and segments.
+
+  Over the Christmas holidays, several features (dots, labels, segment marks,
+  angle marks) will hopefully be introduced and a proper release will
+  hopefully occur.
+
+
+AUTHOR AND LICENSE
+
+  Gavin Sinclair
+  gsinclair at gmail dot com
+
+  This project uses the MIT License.  See 'LICENSE' for details.  If you want
+  to use any of the code in your project without bothering with license
+  details, contact me via email.

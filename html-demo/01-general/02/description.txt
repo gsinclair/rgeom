@@ -1,0 +1,3 @@
+The triangle is the same (default) one as above, but this time we have a circle
+in a distant location.  The image is therefore "zoomed out" and the triangle
+appears much smaller.

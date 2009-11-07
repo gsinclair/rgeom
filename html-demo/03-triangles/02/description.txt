@@ -1,0 +1,8 @@
+h: Medians of a triangle
+
+When demonstrating the properties of a triangle, it's sufficient to use the
+default scalene triangle construction.  (It's a 5-6-7 triangle.)
+
+Here we construct segments from each vertex to the midpoint of the opposite
+side.  We do this explicitly, although there are (or should be) Triangle methods
+to do this for us.
