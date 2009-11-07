@@ -3,6 +3,12 @@ NAME
   RGeom: Ruby-driven geometrically-aware mathematical diagram tool
 
 
+URLS
+
+  Source:    http://github.com/gsinclair/rgeom
+  Examples:  http://rgeom.rubyforge.org
+
+
 DESCRIPTION
 
   RGeom is a programming language (really a Ruby DSL) for generating
@@ -50,8 +56,8 @@ EXAMPLES
   but 'square' will be trivially implemented soon.  'mark_right_angle' may
   have to wait a while.
 
-  Some examples that actually work can be seen in the 'html-demo' directory
-  by opening 'index.html'.
+  You can see actual examples of code and the resulting pictures at
+  http://rgeom.rubyforge.org.
 
 
 STATUS
@@ -95,7 +101,7 @@ USAGE
     # RGeom code goes here, to define points, segments, triangles, etc.
     render 'filename.png'
 
-  See the html-demo code for examples of RGeom code.
+  See http://rgeom.rubyforge.org for examples.
 
 
 DEPENDENCIES
@@ -105,13 +111,10 @@ DEPENDENCIES
   In RGeom itself:
    * extensions
    * fattr
-   * ruby-debug       [1]
-   * dev-utils        [1]
    * term-ansicolor
    * facets
-
-  [1] These are for debugging; if debugging code is removed, these
-      dependencies are no longer required.
+   * ruby-debug       [debugging code only]
+   * dev-utils        [debugging code only]
 
   To generate the HTML examples (in addition to the above):
    * rio
@@ -119,11 +122,52 @@ DEPENDENCIES
    * coderay
 
 
+SEE ALSO
+
+  Eukledies: http://www.eukleides.org
+
+    High-level but not powerful.  This code draw a triangle and its three
+    angular bisectors.
+
+      A B C triangle
+      draw(A, B, C)
+      draw(incircle(A, B, C))
+      draw(bisector(B, A, C), dotted)
+      draw(bisector(A, B, C), dotted)
+      draw(bisector(B, C, A), dotted)
+
+  Asymptote: http://asymptote.sourceforge.net  http://www.piprime.fr/asymptote
+
+    (Extremely) powerful but a bit low-level.  Doesn't strike the right balance
+    for high-school mathematical diagrams.  Only for use in TeX.  This example
+    draws a triangle and its three medians
+
+      size(2cm,2cm);
+      pair A, B, C;
+      A=(0,0); B=(1,0); C=(0,1);
+      draw(A--B--C--cycle);
+      draw (midpoint(A--B) -- C);
+      draw (B+0.5*(C-B) -- A);
+      draw (interp(A,C,0.5) -- B);
+      dot(A/3 + B/3 + C/3);
+
+  TikZ/PGF: http://www.texample.net/tikz
+
+    Same assessment as Asymptote.  The following example draws a circle, the two
+    tangents to the circle from a fixed point, and the two corresponding radii.
+
+      \begin{tikzpicture}
+        \coordinate (a) at (3,2);
+        \node [circle,draw] (c) at (1,1) [minimum size=40pt] {$c$};
+        \draw[red] (a) -- (tangent cs:node=c,point={(a)},solution=1)
+                  -- (c.center) -- (tangent cs:node=c,point={(a)},solution=2)
+                  -- cycle;
+      \end{tikzpicture}
+
+
 AUTHOR AND LICENSE
 
   Gavin Sinclair
   gsinclair at gmail dot com
 
-  This project uses the MIT License.  See 'LICENSE' for details.  If you want
-  to use any of the code in your project without bothering with license
-  details, contact me via email.
+  This project uses the MIT License.  See 'LICENSE' for details.
