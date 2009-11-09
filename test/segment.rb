@@ -18,7 +18,7 @@ class TestSegment < Test::Unit::TestCase
       assert_close 7.433034374, s.length
       assert_close -2.308611387, s.angle
       debug @register
-      assert_same s, @register.by_label(:segment, :AB).shape
+      assert_same s, @register.by_label(:segment, :AB)
       assert_same s, Segment[0]
     end
   end

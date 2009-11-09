@@ -46,7 +46,7 @@ module RGeom
     def inspect; to_s; end
 
     def Segment.[](n)
-      @@register.nth(:segment, n).shape
+      @@register.nth(:segment, n)
     end
 
       # Returns the same segment as this one, but with the vertices in the opposite
