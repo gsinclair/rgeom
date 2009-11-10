@@ -45,10 +45,6 @@ module RGeom
     end
     def inspect; to_s; end
 
-    def Circle.[](n)
-      @@register.nth(:circle, n)
-    end
-
       # The calculation of a circle's bounding box is different for polygonal shapes.
     def bounding_box
       r = @radius

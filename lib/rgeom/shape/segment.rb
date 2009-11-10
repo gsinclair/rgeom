@@ -21,12 +21,13 @@ module RGeom
     # They are immutable once created (for now anyway...)
   class Segment < Shape
 
-    def initialize(vertex_list)
-      @vertices = vertex_list    # See note on attr_reader :vertices below.
-      @label = vertex_list.label
-      @p, @q = vertex_list.points
+    CATEGORY = :segment
+
+    def initialize(vertices)
+      super(vertices)
+      @p, @q = vertices.points
+      # TODO Error if @p or @q is nil.
       @length, @angle = Point.relative(p, q).polar
-      @@register.store(:segment, self)
     end
 
     attr_reader :label
