@@ -82,6 +82,13 @@ module RGeom
 
 
 
+    def square(*args)
+      data = RGeom::Square.parse(*args)
+      RGeom::Square.construct(data)
+    end
+
+
+
     def generate(*args, &block)
       Shape.generate(*args, &block)
     end

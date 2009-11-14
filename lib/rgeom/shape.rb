@@ -42,6 +42,8 @@ module RGeom
 
     @@register = RGeom::Register.instance
     attr_reader :id, :label, :style
+    attr_reader :vertices   # TODO: consider whether this should be here;
+                            #       it's here to support methods like points, ...
     def category; Err.not_implemented; end
     #def label;    Err.not_implemented; end
 
@@ -60,6 +62,7 @@ module RGeom
       @@register.nth(self::CATEGORY, n)
     end
 
+      # Circle.category returns :circle, etc.
     def category
       self.class::CATEGORY
     end
@@ -87,7 +90,13 @@ module RGeom
       end
     end
 
-      # TODO nice comment here.
+      # Each shape needs to parse its arguments in unique ways, but there is
+      # common stuff too, like the label.  This method, implemented in Triangle,
+      # Segment, etc., parses the stuff that is specific to that shape and
+      # returns a hash of the things it's parsed.
+      #
+      # _a_ is an ArgumentProcessor; _label_ is :ABC or :XP__ or nil or
+      # whatever.
     def Shape.parse_specific(a, label)
       raise "Not implemented in base class"
     end
@@ -154,6 +163,18 @@ module RGeom
       # shapes.
     def points
       self.vertices.points
+    end
+
+      # Returns the nth point that defines this shape.  TODO: more efficient
+      # implementation.
+    def pt(n)
+      points[n]
+    end
+
+    def each_vertex
+      points.each do |pt|
+        yield pt
+      end
     end
 
       # Default implementation of bounding box which will be sufficient for most

@@ -63,6 +63,9 @@ module RGeom
 
   class Circle < Shape; end
   require 'rgeom/shape/circle'
+
+  class Square < Shape; end
+  require 'rgeom/shape/square'
   # etc.
 
   module Commands; end   # triangle(), circle(), p(), etc. (for inclusion to top-level).

@@ -12,10 +12,10 @@ end
 module RGeom
   class Row
     ID_PREFIXES = {
-      :triangle => 'tri', :segment => 'seg', :circle => 'cir',
+      :triangle => 'tri', :segment => 'seg', :circle => 'cir', :square => 'squ',
     }
     ID_NUMBER = {
-      :triangle => 0, :segment => 0, :circle => 0,
+      :triangle => 0, :segment => 0, :circle => 0, :square => 0,
     }
     fattr :category, :id, :shape, :style
     def initialize(category, shape)

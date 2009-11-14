@@ -32,10 +32,21 @@ module RGeom::Assertions
     assert_equal vals.shift, circle.label, "label"
   end
 
+    # assert_square a_square, %(3 5   2 0   1.2 7.5   9 10)
+  def assert_square(square, vals)
+    square.each_vertex do |vertex|
+      x = Float(vals.shift)
+      y = Float(vals.shift)
+      assert_point p(x,y), vertex
+    end
+  end
+
   def assert_point_equal(actual, expected)
     assert_close actual.x, expected.x
     assert_close actual.y, expected.y
   end
+
+  alias assert_point assert_point_equal
 
   def assert_empty(collection)
     assert(collection.empty?)
