@@ -54,6 +54,9 @@ class TestTriangleConstructBasic < Test::Unit::TestCase
   end
 
   def test_4_default_equilateral
+    triangle(:ABC, :equilateral).tap do |t|
+      assert_vertices t, %w{A 0 0   B 5 0   C 2.5 4.330127}
+    end
   end
 
   def test_5_default_scalene
