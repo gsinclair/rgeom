@@ -3,8 +3,6 @@ module RGeom
   
   module Commands
 
-    @register ||= RGeom::Register.instance    # move @r to Commands?
-
     def p(*args)
       Point[*args]
     end
@@ -12,7 +10,7 @@ module RGeom
 
       # points :A => [4,1], :B => [5,-3], :C => p(3,0)
     def points(pts={})
-      #@r ||= RGeom::Register.instance    # move @r to Commands?
+      @register ||= RGeom::Register.instance
       pts.each_pair do |name,coords|
         @register[name] = Point[coords]
       end
@@ -42,6 +40,7 @@ module RGeom
       # Maybe Shape.create(:triangle, *args) or something.
       if args.first.to_s =~ /^([A-Z]{3})$/
         label = $1
+        @register ||= RGeom::Register.instance
         if t = @register.by_label(:triangle, label)
           # The user has called triange(:ABC, ...) for the second time, so
           # we return the existing triangle.

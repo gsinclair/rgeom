@@ -123,14 +123,14 @@ module RGeom
       @by_id[shape.id] = shape
       @by_category[category] << shape
       if shape.label
-        key = "#{category}_#{Util.sort_symbol(shape.label)}"
+        key = "#{category}_#{RGeom::Util.sort_symbol(shape.label)}"
         @by_label[key] = shape
       end
     end
 
     def by_label(category, label)
       return nil if label.nil?
-      key = "#{category}_#{Util.sort_symbol(label)}"
+      key = "#{category}_#{RGeom::Util.sort_symbol(label)}"
       debug key
       debug @by_label.pp_s
       @by_label[key]
