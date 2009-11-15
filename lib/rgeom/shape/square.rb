@@ -30,7 +30,7 @@ module RGeom
       @side = @base.length
     end
 
-    attr_reader :base, :side
+    attr_reader :side
 
     def to_s(mode=:long)
       label = @label || "(no label)"
@@ -60,7 +60,7 @@ end  # module RGeom
 
 module RGeom
   class Square::Data < Shape::Data
-    fattr :side, :base
+    fattr :side
     def to_s(format=:long)
       if format == :short
         "label: #{label.inspect}  side: #{side}  "
@@ -70,7 +70,6 @@ module RGeom
             label         #{label.inspect}
             vertex_list   #{vertex_list.inspect}
             side          #{side.inspect}
-            base          #{base.inspect}
             givens        #{givens.inspect}
             unprocessed   #{unprocessed.inspect}
           </circle_data>
@@ -97,8 +96,7 @@ module RGeom; class Square
   def Square.parse_specific(a, label)
     vertex_list = VertexList.resolve(4, label)
     side        = a.extract(:side)
-    base        = a.extract(:base)
-    { :vertex_list => vertex_list, :side => side, :base => base }
+    { :vertex_list => vertex_list, :side => side }
   end
 
   def Square.label_size; 4; end
@@ -125,9 +123,7 @@ module RGeom
       # square :ABCD   where A is defined (or defaults to origin)
       # square :AB__   where A and B are defined
       # square :ABCD, :side => 10   where A is defined (or defaults to origin)
-      # square :base => :CX
     def construct
-      debug @data.to_s(:long)
       a, b, c, d = @data.vertex_list.points
       scale, angle, vector = nil
       case @data.vertex_list.mask

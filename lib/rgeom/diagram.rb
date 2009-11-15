@@ -78,6 +78,9 @@ module RGeom
         when :circle
           c = row.shape
           canvas.circle(c.centre, c.radius)
+        when :square
+          s = row.shape
+          canvas.polyline(s.points, :closed)
         else
           raise "Unknown drawing object type: #{label.inspect}"
         end

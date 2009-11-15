@@ -12,12 +12,6 @@ class TestSquare < Test::Unit::TestCase
     debug $test_unit_current_test
   end
 
-  # square :ABCD   where A and B are defined
-  # square :ABCD   where A is defined (or defaults to origin)
-  # square :AB__   where A and B are defined
-  # square :ABCD, :side => 10   where A is defined (or defaults to origin)
-  # square :base => :CX
-
   def test_1_default_square
     square(:MNOP).tap do |s|
       assert_square s, %w(0 0   5 0   5 5   0 5)
@@ -44,33 +38,19 @@ class TestSquare < Test::Unit::TestCase
     end
   end
 
-  def test_3a_angled_square_A_and_B_defined
+  def test_3_angled_square_A_and_B_defined
     square(:AB__).tap do |s|
-      assert_square s, %w(3 1   7 -2   10 2   6 7)
+      assert_square s, %w(3 1   7 -2   10 2   6 5)
       assert_equal 5, s.side
     end
   end
 
-  def test_3b_angled_square_A_and_B_defined
-    square(:base => :AB).tap do |s|
-      assert_square s, %w(3 1   7 -2   10 2   6 7)
-      assert_equal 5, s.side
-    end
-  end
-
-  def test_4a_angled_square_other_way_around
+  def test_4_angled_square_other_way_around
     square(:BARF).tap do |s|
       assert_square s, %w(7 -2   3 1   0 -3   4 -6)
       assert_equal 5, s.side
       assert_point p(0,-3), @register[:R]
       assert_point p(4,-6), @register[:F]
-    end
-  end
-
-  def test_4b_angled_square_other_way_around
-    square(:base => :BA).tap do |s|
-      assert_square s, %w(7 -2   3 1   0 -3   4 -6)
-      assert_equal 5, s.side
     end
   end
 
