@@ -62,6 +62,12 @@ class Overall
         h.p %{This document is divided into logical segments, beginning with core
           concepts and interesting demonstrations, and continuing with in-depth examples
           of RGeom's various capabilities (triangles, circles, ...).}
+        h.p do |y|
+          y << %{Both the code and this example file are in their relative infancy.  You
+              can find the code at}
+          y.a('github', :href => 'http://github.com/gsinclair/rgeom')
+          y << '.'
+        end
         toc(h)
         @chapters.each do |chapter|
           chapter.render(h)
@@ -201,7 +207,14 @@ class Example
 
   def process
     @@register.clear!
-    eval @code
+    begin
+      eval @code
+    rescue
+      STDERR.puts "Error occured while executing code:\n" + @code.indent(4)
+      STDERR.puts
+      STDERR.puts $!
+      STDERR.puts $!.backtrace
+    end
     @out = file('out.png')
     RGeom::Commands.render(@out, :width => 300)
     @width = $rgeom_diagram_width
