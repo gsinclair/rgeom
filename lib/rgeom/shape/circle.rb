@@ -192,10 +192,10 @@ module RGeom
           _, radius = parse_diameter(diameter)
         end
       when "PS_"
-          check[radius,2]
+        check[radius,2]
         _, radius = parse_radius(radius)
       when "P_S"
-          check[diameter,2]
+        check[diameter,2]
         _, radius = parse_diameter(diameter)
       end
 
@@ -218,7 +218,6 @@ module RGeom
     def parse_diameter(diameter)
       VertexList.resolve(2, diameter).tap do |vl|
         Err.invalid_circle_spec(":diameter => #{diameter}") unless vl.mask == "TT"
-        #debugger if $test_unit_current_test =~ /12/
         centre = Point.midpoint(vl[0], vl[1])
         radius = Point.distance(vl[0], vl[1]) / 2
         return [centre, radius]
