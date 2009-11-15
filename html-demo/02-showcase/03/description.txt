@@ -1,0 +1,7 @@
+h: Pythagoras's Theorem
+
+The right-angle mark is achieved using a square, which is not nice, but
+it's all we've got at the moment.
+
+The order in which you specify the vertices of a square is important.  Like a
+triangle, it is constructed clockwise.
