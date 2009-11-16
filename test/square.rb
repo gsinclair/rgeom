@@ -38,19 +38,47 @@ class TestSquare < Test::Unit::TestCase
     end
   end
 
-  def test_3_angled_square_A_and_B_defined
+  def test_3a_angled_square_A_and_B_defined
     square(:AB__).tap do |s|
       assert_square s, %w(3 1   7 -2   10 2   6 5)
       assert_equal 5, s.side
     end
   end
 
-  def test_4_angled_square_other_way_around
+  def test_3b_angled_square_A_and_B_defined
+    square(:base => :AB).tap do |s|
+      assert_square s, %w(3 1   7 -2   10 2   6 5)
+      assert_equal 5, s.side
+    end
+  end
+
+  def test_3c_angled_square_A_and_B_defined
+    square(:base => segment(:AB)).tap do |s|
+      assert_square s, %w(3 1   7 -2   10 2   6 5)
+      assert_equal 5, s.side
+    end
+  end
+
+  def test_4a_angled_square_other_way_around
     square(:BARF).tap do |s|
       assert_square s, %w(7 -2   3 1   0 -3   4 -6)
       assert_equal 5, s.side
       assert_point p(0,-3), @register[:R]
       assert_point p(4,-6), @register[:F]
+    end
+  end
+
+  def test_4b_angled_square_other_way_around
+    square(:base => :BA).tap do |s|
+      assert_square s, %w(7 -2   3 1   0 -3   4 -6)
+      assert_equal 5, s.side
+    end
+  end
+
+  def test_4c_angled_square_other_way_around
+    square(:base => segment(:BA)).tap do |s|
+      assert_square s, %w(7 -2   3 1   0 -3   4 -6)
+      assert_equal 5, s.side
     end
   end
 

@@ -60,7 +60,7 @@ end  # module RGeom
 
 module RGeom
   class Square::Data < Shape::Data
-    fattr :side
+    fattr :side, :base
     def to_s(format=:long)
       if format == :short
         "label: #{label.inspect}  side: #{side}  "
@@ -70,6 +70,7 @@ module RGeom
             label         #{label.inspect}
             vertex_list   #{vertex_list.inspect}
             side          #{side.inspect}
+            base          #{base.inspect}
             givens        #{givens.inspect}
             unprocessed   #{unprocessed.inspect}
           </circle_data>
@@ -96,7 +97,8 @@ module RGeom; class Square
   def Square.parse_specific(a, label)
     vertex_list = VertexList.resolve(4, label)
     side        = a.extract(:side)
-    { :vertex_list => vertex_list, :side => side }
+    base        = a.extract(:base)
+    { :vertex_list => vertex_list, :side => side, :base => base }
   end
 
   def Square.label_size; 4; end
@@ -123,12 +125,16 @@ module RGeom
       # square :ABCD   where A is defined (or defaults to origin)
       # square :AB__   where A and B are defined
       # square :ABCD, :side => 10   where A is defined (or defaults to origin)
+      # square :base => :CD
+      # square :base => some_segment
     def construct
-      a, b, c, d = @data.vertex_list.points
+      base, side = @data.values_at(:base, :side)
       scale, angle, vector = nil
+      check_specification_integrity
+      incorporate_base_specification
+        # ^ This will update @data.vertex_list if given, e.g., :base => :XY
+      a, b, c, d = @data.vertex_list.points
       case @data.vertex_list.mask
-      when /TTTT/, /TTT./
-        Err.invalid_square_spec
       when /TT../
         scale, angle = Point.relative(a, b).polar
         vector = a
@@ -145,6 +151,33 @@ module RGeom
     def unit_square
       @unit_square ||= PointList[[0,0], [1,0], [1,1], [0,1]]
     end
+
+    def check_specification_integrity
+      if @data.base? and @data.side?
+        Err.invalid_square_spec(@data, ":base and :side both specified")
+      elsif @data.vertex_list.mask =~ /TTT./
+        Err.invalid_square_spec(@data, "Too many points specified")
+      elsif @data.base? and @data.label?
+        Err.invalid_square_spec(@data, ":base and label specified")
+      end
+    end
+    private :check_specification_integrity
+
+    def incorporate_base_specification
+      if base = @data.base?
+        points =
+          case base
+          when Segment
+            base.points
+          when Symbol
+            VertexList.resolve(2, base).points
+          else
+            Err.invalid_square_spec(@data, "Invalid value for base: #{base.inspect}")
+          end
+        @data.vertex_list.accommodate(points)
+      end
+    end
+    private :incorporate_base_specification
 
   end  # class Square::Constructor
 
