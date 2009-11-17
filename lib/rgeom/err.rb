@@ -83,6 +83,13 @@ module RGeom;
       raise RGeom::Err::SpecificationError, msg.yellow.bold
     end
 
+    def invalid_arc_no_angles
+      msg = %{
+        No angle boundaries were provided for the arc.
+      }.tabto(0).trim
+      raise RGeom::Err::SpecificationError, msg.yellow.bold
+    end
+
     def nonexistent_centre(label)
       msg = %{The specified centre (#{label}) does not exist.}
       raise RGeom::Err::SpecificationError, msg.yellow.bold

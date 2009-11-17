@@ -26,6 +26,11 @@ module RGeom
       relative(a, b).polar[0]
     end
 
+      # Angle from first point to second.  Result ranges from -PI to PI.
+    def Point.angle(a, b)
+      relative(a, b).polar[1]
+    end
+
       # TODO: I don't think this belongs in Point.  Util?  Calc?  Geometry?
     def Point.midpoint(a, b)
       x = (a.x + b.x) / 2

@@ -1,0 +1,15 @@
+[This file functions as a development log.]
+
+17 Nov 2009:
+  Starting work on arcs and semicircles. [arc branch]
+    arc(:centre => p(5,2), :radius => 4, :angle => [35,91])
+    semicircle(:diameter => :AB)
+    arc(:radius => :AB, :angle => [10,15])
+  
+
+16 Nov 2009:
+  Completed square(), including square(:base => :XY) [57261b6a] and
+  square(:ABCD) [c3b31fc4b].
+
+
+vim: ai tw=70

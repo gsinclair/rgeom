@@ -81,6 +81,21 @@ module RGeom
 
 
 
+    def arc(*args)
+      data = RGeom::Arc.parse(*args)
+      RGeom::Arc.construct(data)
+    end
+
+
+
+    def semicircle(*args)
+      data = RGeom::Arc.parse(*args)
+      data.angles = [0,180]
+      RGeom::Arc.construct(data)
+    end
+
+
+
     def square(*args)
       data = RGeom::Square.parse(*args)
       RGeom::Square.construct(data)

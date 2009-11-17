@@ -12,10 +12,11 @@ end
 module RGeom
   class Row
     ID_PREFIXES = {
-      :triangle => 'tri', :segment => 'seg', :circle => 'cir', :square => 'squ',
+      :triangle => 'tri', :segment => 'seg', :circle => 'cir',
+      :square => 'squ', :arc => 'arc',
     }
     ID_NUMBER = {
-      :triangle => 0, :segment => 0, :circle => 0, :square => 0,
+      :triangle => 0, :segment => 0, :circle => 0, :square => 0, :arc => 0,
     }
     fattr :category, :id, :shape, :style
     def initialize(category, shape)
@@ -125,6 +126,20 @@ module RGeom
       if shape.label
         key = "#{category}_#{RGeom::Util.sort_symbol(shape.label)}"
         @by_label[key] = shape
+      end
+    end
+
+      # Removes the given shape from the register.
+      # TODO: This is awkward; the register wasn't designed to have things
+      # removed.  Perhaps there is a way to avoid unwanted shapes going into the
+      # register in the first place.
+    def remove(category, shape)
+      @rows.delete_if { |row| row.id == shape.id }
+      @by_id.delete_if { |id, row| id == shape.id }
+      @by_category[category].delete_if { |sh| sh.id == shape.id }
+      if shape.label
+        key = "#{category}_#{RGeom::Util.sort_symbol(shape.label)}"
+        @by_label.delete_if { |k,v| k == key }
       end
     end
 

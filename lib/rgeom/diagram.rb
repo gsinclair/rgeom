@@ -78,6 +78,9 @@ module RGeom
         when :circle
           c = row.shape
           canvas.circle(c.centre, c.radius)
+        when :arc
+          a = row.shape
+          canvas.arc(a.centre, a.radius, a.absolute_angles)
         when :square
           s = row.shape
           canvas.polyline(s.points, :closed)
@@ -201,8 +204,18 @@ module RGeom; class Diagram;
     def circle(centre, radius)
       c = map_point(centre)
       r = scale(radius)
-      debug "(canvas) circle #{c.x} #{c.y} #{r}"
+      debug "(canvas) circle (%3.1f, %3.1f) %3.1f" % [c.x, c.y, r]
       @context.circle(c.x, c.y, r)
+      @context.stroke
+    end
+
+    def arc(centre, radius, angles)
+      c = map_point(centre)
+      r = scale(radius)
+      a = angles.map { |x| x.in_radians }
+      debug "(canvas) arc_negative (%3.1f, %3.1f) %3.1f (%3.3f %3.3f)" %
+        [c.x, c.y, r, a[0], a[1]]
+      @context.arc_negative(c.x, c.y, r, a[0], a[1])
       @context.stroke
     end
 
