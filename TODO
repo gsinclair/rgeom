@@ -1,1 +1,3 @@
 * Allow circles to have labels like :C1, not just :C
+* ArgumentProcessor to enforce things like "can't specify both diameter and
+  radius", in order to catch errors earlier and simplify construction code.
