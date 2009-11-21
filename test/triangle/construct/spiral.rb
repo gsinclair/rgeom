@@ -45,6 +45,9 @@ class TestTriangleConstructSpiral < Test::Unit::TestCase
       triangle(:base => tn.hypotenuse.reverse, :right_angle => :first, :height => 1)
     end
     assert_close Math.sqrt(19), Triangle[-1].hypotenuse.length
+    assert_equal 10, @register.nobjects
+      # ^ We're checking that only the 11 triangles end up in the register, not
+      #   any extraneous segments (i.e. the hypotenuses).
     debug @register
   end
 
