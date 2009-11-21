@@ -25,13 +25,10 @@ module RGeom
     end
 
 
-
-    def segment(*args)
-      data = Segment.parse(*args)
-      Segment.construct(data)
-    end
-
-
+    def segment(*args) Segment.create(*args) end
+    def circle(*args)  Circle.create(*args)  end
+    def arc(*args)     Arc.create(*args)     end
+    def square(*args)  Square.create(*args)  end
 
     def triangle(*args)
       # TODO the code below is necessary but ugly.  Find a way to include it
@@ -50,12 +47,23 @@ module RGeom
           return t
         end
       end
-      data = RGeom::Triangle.parse(*args)
-      RGeom::Triangle.construct(data)
+      Triangle.create(*args)
+    end
+
+    def semicircle(*args)
+      if Hash === args.last
+        args.last[:angles] = [0,180]
+      else
+        args << Hash[:angles => [0,180]]
+      end
+      Arc.create(*args)
     end
 
 
 
+
+
+=begin (some circle docs to use somewhere sometime)
       # Some examples:
       #   circle(:H, :centre => :P, :radius => 5)
       #   circle(:H, :centre => :P, :diameter => 10)
@@ -74,33 +82,7 @@ module RGeom
       # * The diameter is like the radius in this respect.
       # * Anytime a two-letter symbol is given, it must resolve.  You can't create
       #   points implicitly through a circle; it doesn't make much sense.
-    def circle(*args)
-      data = RGeom::Circle.parse(*args)
-      RGeom::Circle.construct(data)
-    end
-
-
-
-    def arc(*args)
-      data = RGeom::Arc.parse(*args)
-      RGeom::Arc.construct(data)
-    end
-
-
-
-    def semicircle(*args)
-      data = RGeom::Arc.parse(*args)
-      data.angles = [0,180]
-      RGeom::Arc.construct(data)
-    end
-
-
-
-    def square(*args)
-      data = RGeom::Square.parse(*args)
-      RGeom::Square.construct(data)
-    end
-
+=end
 
 
     def generate(*args, &block)
