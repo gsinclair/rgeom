@@ -171,6 +171,7 @@ end; end  # class RGeom::Arc
 # *---------------------------------------------------------------------------*
 
 module RGeom
+
   class Arc::Constructor
     def initialize(data)
       @data = data
@@ -190,9 +191,5 @@ module RGeom
 
   end  # class Arc::Constructor
 
-  def Arc.construct(data)
-    debug data
-    Arc::Constructor.new(data).construct
-  end
-end
+end  # class RGeom
 

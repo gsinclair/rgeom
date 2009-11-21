@@ -192,8 +192,4 @@ module RGeom
 
   end  # class Segment::Constructor
 
-  def Segment.construct(data)
-    Segment::Constructor.new(data).construct
-  end
-
 end  # module RGeom

@@ -214,11 +214,3 @@ module RGeom; class Triangle; class Constructor
   end
 end; end; end  # class RGeom::Triangle::Constructor
 
-
-
-module RGeom
-  def Triangle.construct(data)
-    Triangle::Constructor.new(data).construct
-  end
-end
-

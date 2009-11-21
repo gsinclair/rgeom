@@ -11,6 +11,12 @@ require 'rgeom/support/argument_processor'
 module RGeom
   class Shape
 
+      # e.g. You can call Triangle.construct(data) where data is an instance of
+      # Triangle::Data.  The need to do this should be rare!
+    def Shape.construct(data)
+      self::Constructor.new(data).construct
+    end
+
     #
     # The following things are a part of every Shape object.
     #

@@ -246,8 +246,5 @@ module RGeom
 
   end  # class Circle::Constructor
 
-  def Circle.construct(data)
-    Circle::Constructor.new(data).construct
-  end
-end
+end  # module RGeom
 

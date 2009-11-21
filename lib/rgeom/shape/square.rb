@@ -181,9 +181,5 @@ module RGeom
 
   end  # class Square::Constructor
 
-  # TODO Implement this method once as Shape.construct.
-  def Square.construct(data)
-    Square::Constructor.new(data).construct
-  end
-end
+end  # module RGeom
 
