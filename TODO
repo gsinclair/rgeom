@@ -1,3 +1,16 @@
 * Allow circles to have labels like :C1, not just :C
 * ArgumentProcessor to enforce things like "can't specify both diameter and
   radius", in order to catch errors earlier and simplify construction code.
+* Consider whether arcs should be allowed to have labels.
+  They do at the moment, just like circles.  But it seems
+  unnecessary.
+* Consider refactoring such that Circle < Arc.  A circle
+  really is a special case of an arc, where the angles are
+  0 and 360 degrees!
+* More thorough testing of Arc (test/arc2.rb).  It's working
+  pretty well and the existing testing is good, but a lot more
+  cases need to be tested.
+* Prevent unwanted shapes from getting into the registry.  At
+  the moment, every shape goes in there.  If you don't want
+  it there, you call Register#remove.  That is awkward and
+  backwards.
