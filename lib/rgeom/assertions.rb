@@ -32,6 +32,12 @@ module RGeom::Assertions
     assert_equal vals.shift, circle.label, "label"
   end
 
+  def assert_arc(vals, arc)
+    assert_circle(vals, arc)
+    angles = [Float(vals.shift), Float(vals.shift)]
+    assert_equal angles, arc.angles
+  end
+
     # assert_square a_square, %(3 5   2 0   1.2 7.5   9 10)
   def assert_square(square, vals)
     square.each_vertex do |vertex|
