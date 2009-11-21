@@ -1,14 +1,17 @@
 [This file functions as a development log.]
 
 22 Nov 2009:
-  Starting work on enabling shapes to opt out of being registered.
-  This is important so that shapes can be created to assist in the
-  construction of other shapes but without being displayed themselves.
-  The current arrangement -- create the shape then deregister it -- is
-  a hack.  Look for syntax like
-    _square(:ABCD, ...)
-    Square.new(:[no]reg, ...)
-  [register branch]
+  Implemented opt-in shape registration instead of opt-out.
+  Calling circle(...) used to mean that circle was added to the
+  register, and therefore rendered.  But arcs need to create a circle
+  _without_ adding it to the register.  A messy "deregistration"
+  approach was implemented before, with a view to changing it.
+  Now:
+    square(...)   # square goes in register
+    _square(...)  # square doesn't go in register
+  As part of this work [up to 0cbcac20], construction code was
+  rationalised, such that commands.rb reads much better than it used
+  to, and some cruft has been removed from the various shape classes.
 
 
 21 Nov 2009:
