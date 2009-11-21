@@ -33,6 +33,8 @@ class ArgumentProcessor
     @keyset = Set.new(@hash.keys)
     @processed = Set.new
   end
+  def to_s() "ArgumentProcessor: #{@hash.inspect}" end
+  def inspect() to_s end
     # Returns the data (keys only) that _has_ been processed.
   def processed() @processed end
     # Returns the data (keys and values) that has _not_ been processed.

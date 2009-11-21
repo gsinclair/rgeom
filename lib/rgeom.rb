@@ -64,6 +64,9 @@ module RGeom
   class Circle < Shape; end
   require 'rgeom/shape/circle'
 
+  class Arc < Shape; end
+  require 'rgeom/shape/arc'
+
   class Square < Shape; end
   require 'rgeom/shape/square'
   # etc.
@@ -84,6 +87,17 @@ module RGeom
       def Float.close?(a, b, tolerance=0.000001)
         (a - b).abs < tolerance
       end
+    end
+    class ::Object
+      def blank?
+        self.nil? or ((self.respond_to? :empty?) and self.empty?)
+      end
+    end
+    class ::Numeric
+      D2R_MUlTIPLIER = Math::PI / 180.0
+      R2D_MULTIPLIER = 180.0 / Math::PI
+      def in_radians; self * D2R_MUlTIPLIER; end
+      def in_degrees; self * R2D_MULTIPLIER; end
     end
     class ::Symbol
         # :ABC -> [:A, :B, :C]
