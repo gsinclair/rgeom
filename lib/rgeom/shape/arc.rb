@@ -29,6 +29,7 @@ module RGeom
       @radius = radius
       @angles = _normalise(angles)
       @angle_offset = angle_offset    # Where does the 'zero' angle really start?
+      @absolute_angles = @angles.map { |a| a + @angle_offset }
     end
 
     attr_reader :centre, :radius, :angles, :angle_offset
@@ -76,11 +77,11 @@ module RGeom
 
       # _Relative_ angles base the zero angle on the radius vector (when the arc
       # is constructed).  This returns the values the arc was created with.
-    def relative_angles() angles end
+    def relative_angles() @angles end
 
       # _Absolute_ angles base the zero angle on the positive x-axis, as is
       # normal.  This method is important for rendering the arc.
-    def absolute_angles() angles.map { |a| a + @angle_offset } end
+    def absolute_angles() @absolute_angles end
 
     def centre_angle() @angles[1] - @angles[0] end
 

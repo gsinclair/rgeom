@@ -214,8 +214,11 @@ module RGeom; class Diagram;
       r = scale(radius)
       a = angles.map { |x| x.in_radians }
       debug "(canvas) arc_negative (%3.1f, %3.1f) %3.1f (%3.3f %3.3f)" %
-        [c.x, c.y, r, a[0], a[1]]
-      @context.arc_negative(c.x, c.y, r, a[0], a[1])
+        [c.x, c.y, r, -a[0], -a[1]]
+      @context.arc_negative(c.x, c.y, r, -a[0], -a[1])
+        # Cairo treats angles as increasing clockwise; we use mathematical
+        # convention of anticlockwise.  Therefore we negate our angles when
+        # passing them to Cairo.
       @context.stroke
     end
 

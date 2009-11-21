@@ -14,7 +14,7 @@ module RGeom
     end
 
     def interpolate(k)
-      a, b = @angles || [0,360]
+      a, b = @absolute_angles || [0,360]
       angle = a + k*(b-a)
       point(angle)
     end

@@ -7,9 +7,6 @@
 * Consider refactoring such that Circle < Arc.  A circle
   really is a special case of an arc, where the angles are
   0 and 360 degrees!
-* More thorough testing of Arc (test/arc2.rb).  It's working
-  pretty well and the existing testing is good, but a lot more
-  cases need to be tested.
 * Prevent unwanted shapes from getting into the registry.  At
   the moment, every shape goes in there.  If you don't want
   it there, you call Register#remove.  That is awkward and

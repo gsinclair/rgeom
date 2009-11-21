@@ -184,10 +184,10 @@ module RGeom
         centre = p(0,0); radius = diameter.to_f / 2.0
       when "_S_"
         check[radius,2]
-        centre, radius = parse_radius(radius)
+        centre, radius, angle = parse_radius(radius)
       when "__S"
         check[diameter,2]
-        centre, radius = parse_diameter(diameter)
+        centre, radius, angle = parse_diameter(diameter)
       when "P__"
         radius = 1
       when "PN_"    # Nothing to do.
