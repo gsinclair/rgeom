@@ -1,5 +1,14 @@
 [This file functions as a development log.]
 
+21 Nov 2009:
+  Completed arcs and semicircles.
+  See Examples 2.04 Pythagoras's Theorem again
+           and 2.05 Radioactive sign
+  More work to do in future, perhaps (like Arc#radii), and a
+  refactoring such that Circle < Arc, but this is a good start.
+  [arc branch deleted]
+
+
 17 Nov 2009:
   Starting work on arcs and semicircles. [arc branch]
     arc(:centre => p(5,2), :radius => 4, :angle => [35,91])
