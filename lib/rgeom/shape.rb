@@ -48,9 +48,13 @@ module RGeom
     def initialize(vertices, label=nil)
       @vertices = vertices
       @label    = label || (vertices && vertices.label) || nil
+    end
+
+      # Add this shape to the register.
+    def register
       @@register.store(self.category, self)
-         #                  ^^^^^^^^
          # So Triangle gets stored as :triangle, Segment as :segment, etc.
+      self
     end
 
     @@register = RGeom::Register.instance

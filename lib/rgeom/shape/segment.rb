@@ -54,7 +54,7 @@ module RGeom
       # order.  That can be useful for constructing shapes, as order is important for
       # anti-clockwise construction.
     def reverse
-      segment(:start => @q, :end => @p, :draw => false)
+      _segment(:start => @q, :end => @p, :draw => false)
     end
 
       # In segment AB:
@@ -93,7 +93,7 @@ module RGeom
         @@register[label] = target
       end
       start = (k < 0) ? @p : @q
-      Segment.simple(start, target)
+      Segment.simple(start, target).register
     end
 
   end  # class Segment

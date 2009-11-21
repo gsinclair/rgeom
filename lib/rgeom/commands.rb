@@ -25,12 +25,19 @@ module RGeom
     end
 
 
-    def segment(*args) Segment.create(*args) end
-    def circle(*args)  Circle.create(*args)  end
-    def arc(*args)     Arc.create(*args)     end
-    def square(*args)  Square.create(*args)  end
+    def _segment(*args) Segment.create(*args) end
+    def _circle(*args)  Circle.create(*args)  end
+    def _arc(*args)     Arc.create(*args)     end
+    def _square(*args)  Square.create(*args)  end
 
-    def triangle(*args)
+    def segment(*args)    _segment(*args).register    end
+    def circle(*args)     _circle(*args).register     end
+    def triangle(*args)   _triangle(*args).register   end
+    def arc(*args)        _arc(*args).register        end
+    def semicircle(*args) _semicircle(*args).register end
+    def square(*args)     _square(*args).register     end
+
+    def _triangle(*args)
       # TODO the code below is necessary but ugly.  Find a way to include it
       # somewhere else.  In fact, all of these funtions triangle(), segment,
       # circle() etc. have the same pattern.  It can probably be moved to Shape.
@@ -50,7 +57,7 @@ module RGeom
       Triangle.create(*args)
     end
 
-    def semicircle(*args)
+    def _semicircle(*args)
       if Hash === args.last
         args.last[:angles] = [0,180]
       else
@@ -59,6 +66,27 @@ module RGeom
       Arc.create(*args)
     end
 
+    # Consider this method:
+    #
+    #   def triangle(*args)
+    #     _triangle(*args).register
+    #   end
+    #
+    # That is, <tt>_triangle</tt> creates a triangle but doesn't register it.
+    # <tt>triangle()</tt> creates a triangle and registers it.  That's an easy
+    # way for the user to choose whether a shape will be drawn or not.  (They
+    # may want to "create" a shape just for the purpose of constructing another
+    # one.)
+    #
+    # This block generates such methods for triangle, segment, etc.
+    #
+
+#   [:triangle, :segment, :circle, :arc, :square, :semicircle].each do |method|
+#     underscore_method = "_#{method}"
+#     define_method(method) { |*args|
+#       send(underscore_method, *args).register
+#     }
+#   end
 
 
 
