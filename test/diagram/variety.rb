@@ -34,4 +34,4 @@ class TestDiagramVariety < Test::Unit::TestCase
   debug (TestDiagramVariety.instance_methods - Object.instance_methods).
     sort.join(" ").indent(3)
 
-end  # class TestDiagramVariety
+end if defined? Cairo    # class TestDiagramVariety
