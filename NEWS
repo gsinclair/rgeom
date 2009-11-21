@@ -1,5 +1,16 @@
 [This file functions as a development log.]
 
+22 Nov 2009:
+  Starting work on enabling shapes to opt out of being registered.
+  This is important so that shapes can be created to assist in the
+  construction of other shapes but without being displayed themselves.
+  The current arrangement -- create the shape then deregister it -- is
+  a hack.  Look for syntax like
+    _square(:ABCD, ...)
+    Square.new(:[no]reg, ...)
+  [register branch]
+
+
 21 Nov 2009:
   Completed arcs and semicircles.
   See Examples 2.04 Pythagoras's Theorem again
