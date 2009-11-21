@@ -1,0 +1,4 @@
+h: Pythagoras's Theorem again
+
+Pythagoras's Theorem is stated with squares on the hypotenuse, but any similar
+shape will do.  Here we use semicircles.
