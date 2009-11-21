@@ -25,8 +25,8 @@ module RGeom
 
     def initialize(vertices)
       super(vertices)
-      # TODO @base = Segment.unregistered(first two points in vertices)
-      @base = segment(:p => pt(0), :q => pt(1))
+      @base = Segment.simple( pt(0), pt(1) )
+        # TODO: expose this via attr_reader :base   ?
       @side = @base.length
     end
 

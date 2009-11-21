@@ -59,9 +59,7 @@ class Triangle < Shape
 
   def hypotenuse
     if @type == :right_angle
-      segment(:start => @points[1], :end => @points[2])#.noadd
-         # :noadd means don't add it to the register
-         # Not implemented yet; name may change.
+      Segment.simple( @points[1], @points[2] )
     end
   end
 
