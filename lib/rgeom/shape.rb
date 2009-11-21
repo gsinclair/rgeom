@@ -64,16 +64,6 @@ module RGeom
     def category; Err.not_implemented; end
     #def label;    Err.not_implemented; end
 
-      # When a Shape object is created (Circle, Triangle, ...) it is
-      # automatically stored in the register, which means it will be rendered when
-      # the time comes.  Sometimes, however, you want to create a shape for the
-      # purposes of constructing another one.  You don't want that shape included
-      # in the register.  This method allows a shape to remove itself from the
-      # register.
-    def deregister
-      @@register.remove(self.category, self)
-    end
-
       # A shape's id (:tri03 etc.) is set by the register upon entry.  That
       # a once-only operation.
     def id=(id)

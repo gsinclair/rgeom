@@ -183,8 +183,6 @@ module RGeom
       # parsing; we just use the centre and radius that it determines.
     def construct
       circle = RGeom::Circle.construct(@data.dup)
-      circle.deregister
-        # ^ We create a circle to deal with the stuff like :radius => :AB
       Arc.new(@data.label, circle.centre, circle.radius,
               @data.angles, circle.angle_of_specified_radius_in_degrees)
     end
