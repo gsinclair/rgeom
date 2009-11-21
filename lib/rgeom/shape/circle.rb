@@ -2,8 +2,8 @@
 # *                                                                           *
 # *  Table of Contents                                                        *
 # *                                                                           *
-# *  -1  -Circle (general)                                                   *
-# *  -2  -Data
+# *  -1  -Circle (general)                                                    *
+# *  -2  -Data                                                                *
 # *  -3  -Parse                                                               *
 # *  -4  -Construct                                                           *
 # *                                                                           *
@@ -11,7 +11,7 @@
 
 # *---------------------------------------------------------------------------*
 # *                                                                           *
-# *  -1  -Circle (general)                                                   *
+# *  -1  -Circle (general)                                                    *
 # *                                                                           *
 # *---------------------------------------------------------------------------*
 
@@ -22,19 +22,17 @@ module RGeom
 
     CATEGORY = :circle
 
-    def initialize(centre, radius, label=nil)
+    def initialize(label, centre, radius, angle=0)
       super(nil, label)
       @centre, @radius = centre, radius
+      @angle_of_radius = angle
     end
 
     attr_reader :label
     attr_reader :centre, :radius
 
-      # A circle doesn't really have vertices, but it does have defining points, and a
-      # Shape object must give a good answer when asked what its vertices are.
-    def vertices
-      VertexList.new(1, nil, [@centre])
-    end
+    require 'rgeom/shape/circle/circle_arc_common'
+    include CircleArcCommon
 
     def to_s(format=:ignore)
       if @label
@@ -55,6 +53,23 @@ module RGeom
 
     def tangent_from_external_point(point, n)
       # n is 1 or 2, as there are two tangents
+    end
+
+      # This is an esoteric method designed entirely to assist the
+      # implementation of arcs.  A circle and arc may be specified like this:
+      #
+      #   circle :diameter => :AC
+      #   arc    :diameter => :AC, :angles => [45,100]
+      #
+      # In the case of the arc, the angles 45 and 100 degrees are _relative_ to
+      # the segment AC.  The Arc class needs the angle that AC makes so it can
+      # offset the angles 45 and 100.
+      # 
+      # Since Arc relies on Circle to understand the <tt>:diameter => :AC</tt>
+      # part, that information is lost by the time it gets to Arc.  That's why
+      # this method exists.
+    def angle_of_specified_radius_in_degrees
+      @angle_of_radius.in_degrees
     end
 
   end  # class Circle
@@ -105,12 +120,14 @@ module RGeom; class Circle
     #
     # This method parses the arguments that are specific to a circle.  It
     # returns a Hash that can be merged with the generic Shape data.
-  def Circle.parse_specific(a, label)
+  def Circle.parse_specific(a, label, angles=nil)
     centre   = a.extract(:centre)
     radius   = a.extract(:r, :radius)
     diameter = a.extract(:d, :diameter)
-    { :vertex_list => nil,
-      :centre => centre, :radius => radius, :diameter => diameter }
+    { :vertex_list => nil, :centre => centre,
+      :radius => radius, :diameter => diameter }.tap do |h|
+        h[:angles] = angles if angles
+    end
   end
 
   def Circle.label_size; 1; end
@@ -133,6 +150,7 @@ module RGeom
 
     def construct
       centre, radius, diameter = @data.values_at(:centre, :radius, :diameter)
+      angle = 0     # the angle of the radius (think :radius => :AC)
       mask = [centre, radius, diameter].map { |e|
         case e
         when nil     then '_'
@@ -186,20 +204,20 @@ module RGeom
           radius = diameter.to_f / 2.0
         when "SS_"
           check[radius,2]
-          _, radius = parse_radius(radius)
+          _, radius, angle = parse_radius(radius)
         when "S_S"
           check[diameter,2]
-          _, radius = parse_diameter(diameter)
+          _, radius, angle = parse_diameter(diameter)
         end
       when "PS_"
         check[radius,2]
-        _, radius = parse_radius(radius)
+        _, radius, angle = parse_radius(radius)
       when "P_S"
         check[diameter,2]
-        _, radius = parse_diameter(diameter)
+        _, radius, angle = parse_diameter(diameter)
       end
 
-      Circle.new(centre, radius, @data.label)
+      Circle.new(@data.label, centre, radius, angle)
     end
 
       # Return centre and radius, given symbol like :AB.
@@ -209,7 +227,8 @@ module RGeom
         Err.invalid_circle_spec(":radius => #{radius}") unless vl.mask == "TT"
         centre = vl[0]
         radius = Point.distance(vl[0], vl[1])
-        return [centre, radius]
+        angle = Point.angle(vl[0], vl[1])
+        return [centre, radius, angle]
       end
     end
 
@@ -220,7 +239,8 @@ module RGeom
         Err.invalid_circle_spec(":diameter => #{diameter}") unless vl.mask == "TT"
         centre = Point.midpoint(vl[0], vl[1])
         radius = Point.distance(vl[0], vl[1]) / 2
-        return [centre, radius]
+        angle = Point.angle(vl[0], vl[1])
+        return [centre, radius, angle]
       end
     end
 
