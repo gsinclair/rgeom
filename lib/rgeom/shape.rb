@@ -1,4 +1,3 @@
-require 'rgeom/support/argument_processor'
 
   # RGeom::Shape acts as a base class for Segment, Triangle, Quadrilateral, Circle, etc.
   # What do these things have in common?
@@ -92,18 +91,14 @@ module RGeom
       # Shape.parse provides the general parsing of shape data (label, unprocessed) and
       # calls parse_specific to get the details of the particular shape.
       # 
-      # Returns a Triangle::Data or Segment::Data or ... suitable for use with
-      # the construct() method.
+      # Returns a Specification object.
     def Shape.parse(*args)
       preprocess_arguments(args) do |a|
-        hash = Hash.new
-        hash[:label] = a.extract_label(self.label_size)   # -> :H or :ABC or whatever
-        hash.merge!    parse_specific(a, hash[:label])
-                       # ^^ gather the specifications for this specific shape
-        #hash[:givens] = a.givens(self.givens_keys)
-        hash[:unprocessed] = a.unprocessed
-
-        data = (self)::Data.new(hash)
+        Specification.new(a) do |s|
+          s.resolve_vertex_list(self.label_size)
+          parse_specific(s)
+          s.unprocessed = a.unprocessed
+        end
       end
     end
 

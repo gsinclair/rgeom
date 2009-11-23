@@ -150,13 +150,10 @@ end  # module RGeom
 
 module RGeom; class Arc
 
-    # _a_ : ArgumentProcessor
-    #
-    # This method parses the arguments that are specific to a arc.  It
-    # returns a Hash that can be merged with the generic Shape data.
-  def Arc.parse_specific(a, label)
-    angles = a.extract(:angles)
-    Circle.parse_specific(a, label, angles)
+    # @s : Specification
+  def Arc.parse_specific(s)
+    Circle.parse_specific(s)
+    s.extract(:angles)
   end
 
   def Arc.label_size; 1; end
@@ -182,7 +179,7 @@ module RGeom
       # is a superset of Circle::Data).  We don't have to do the complicated
       # parsing; we just use the centre and radius that it determines.
     def construct
-      circle = RGeom::Circle.construct(@data.dup)
+      circle = RGeom::Circle.construct(@data)
       Arc.new(@data.label, circle.centre, circle.radius,
               @data.angles, circle.angle_of_specified_radius_in_degrees)
     end

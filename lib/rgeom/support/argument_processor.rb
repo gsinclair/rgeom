@@ -19,6 +19,7 @@
 # So "extract" can accept multiple keys, but will only return the first one it finds.
 class ArgumentProcessor
   def initialize(args=[])
+    @args = args.dup
     @hash = Dictionary.new
     args.each do |arg|
       if @hash.key? arg
@@ -33,6 +34,7 @@ class ArgumentProcessor
     @keyset = Set.new(@hash.keys)
     @processed = Set.new
   end
+  def args() @args end
   def to_s() "ArgumentProcessor: #{@hash.inspect}" end
   def inspect() to_s end
     # Returns the data (keys only) that _has_ been processed.

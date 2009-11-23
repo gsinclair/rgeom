@@ -90,15 +90,13 @@ end  # module RGeom
 
 module RGeom; class Square
 
-    # _a_ : ArgumentProcessor
-    #
-    # This method parses the arguments that are specific to a square.  It
-    # returns a Hash that can be merged with the generic Shape data.
-  def Square.parse_specific(a, label)
-    vertex_list = VertexList.resolve(4, label)
-    side        = a.extract(:side)
-    base        = a.extract(:base)
-    { :vertex_list => vertex_list, :side => side, :base => base }
+    # This method parses the arguments that are specific to a square.
+    # The specification comes preloaded with the label and the vertex list.
+    #   @s : Specification
+    #   @a : ArgumentProcessor
+    #   @return : Nothing important; it modifies _s_.
+  def Square.parse_specific(s)
+    s.extract(:side, :base)
   end
 
   def Square.label_size; 4; end
@@ -128,7 +126,6 @@ module RGeom
       # square :base => :CD
       # square :base => some_segment
     def construct
-      base, side = @data.values_at(:base, :side)
       scale, angle, vector = nil
       check_specification_integrity
       incorporate_base_specification
@@ -164,7 +161,7 @@ module RGeom
     private :check_specification_integrity
 
     def incorporate_base_specification
-      if base = @data.base?
+      if base = @data.base
         points =
           case base
           when Segment

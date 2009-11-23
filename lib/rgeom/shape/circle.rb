@@ -116,18 +116,11 @@ end  # module RGeom
 
 module RGeom; class Circle
 
-    # _a_ : ArgumentProcessor
-    #
-    # This method parses the arguments that are specific to a circle.  It
-    # returns a Hash that can be merged with the generic Shape data.
-  def Circle.parse_specific(a, label, angles=nil)
-    centre   = a.extract(:centre)
-    radius   = a.extract(:r, :radius)
-    diameter = a.extract(:d, :diameter)
-    { :vertex_list => nil, :centre => centre,
-      :radius => radius, :diameter => diameter }.tap do |h|
-        h[:angles] = angles if angles
-    end
+    # @s : Specification
+  def Circle.parse_specific(s)
+    s.extract :centre
+    s.extract_alias [:radius, :r], [:diameter, :d]
+    s.vertex_list = nil
   end
 
   def Circle.label_size; 1; end

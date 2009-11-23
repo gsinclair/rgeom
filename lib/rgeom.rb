@@ -76,6 +76,8 @@ module RGeom
 
   module Support
     class ArgumentProcessor; end
+    class Specification; end
+    class Label; end
     class ::Integer
         # 35.d means 35 degrees; it's just decoration.
       def d; self; end
@@ -99,12 +101,19 @@ module RGeom
       def in_radians; self * D2R_MUlTIPLIER; end
       def in_degrees; self * R2D_MULTIPLIER; end
     end
-    class ::Symbol
+    class ::Array
+        # [1,2,3].return_value    == [1,2,3]
+        # [5].return_value        == 5
+      def return_value
+        (self.size == 1) ? self.first : self
+      end
+    end
+    class ::Symbol   # TODO this stuff will be replaced by Label
         # :ABC -> [:A, :B, :C]
       def split; self.to_s.split(//).map { |c| c.to_sym }; end
       def length; to_s.length; end
     end
-    class Util
+    class Util       # TODO so will this
         # :XMP => "MPX"
       def Util.sort_symbol(sym)
         sym.to_s.split(//).sort.join
@@ -112,6 +121,7 @@ module RGeom
     end
   end
 
+  require 'rgeom/support'
   include Support
 
   module Assertions; end  # For testing.

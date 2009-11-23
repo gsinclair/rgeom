@@ -75,10 +75,38 @@ module RGeom;
       raise ArgumentError, msg.yellow.bold
     end
 
+    # General method for dealing with specification errors.
+    # It prints the argument list that the user provided in addition to the
+    # error message that the code provides.
+    #
+    # This method is designed to replace all the methods like
+    # invalid_circle_spec etc., although other methods could _use_ this one.
+    #
+    #   @shape : Symbol, like :triangle, :segment, etc.
+    #   @spec  : Specification object
+    #   @msg   : String providing details about the error
+    def invalid_spec(shape, spec, msg)
+      message = %{
+        Invalid specification for shape '#{shape.to_s.green.bold}'.
+        Details: #{msg.red.bold}
+        Arguments: #{spec.args.inspect.green.bold}
+      }.tabto(0).trim
+      raise SpecificationError, message.yellow.bold
+    end
+
     def invalid_circle_spec(args)
       msg = %{
         The arguments given do not form a valid circle specification:
           #{args.inspect}
+      }.tabto(0).trim
+      raise RGeom::Err::SpecificationError, msg.yellow.bold
+    end
+
+    def invalid_square_spec(spec, msg)
+      msg = %{
+        The arguments given do not form a valid circle specification.
+        (Detail: #{msg})
+          #{spec.inspect}
       }.tabto(0).trim
       raise RGeom::Err::SpecificationError, msg.yellow.bold
     end

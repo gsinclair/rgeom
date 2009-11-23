@@ -141,21 +141,12 @@ module RGeom; class Segment
 
   def Segment.label_size; 2; end
 
-  def Segment.parse_specific(a, label)
-    p        = a.extract(:start, :p)
-    q        = a.extract(:end, :q)
-    move     = a.extract(:move)
-    r        = a.extract(:r)
-    th       = a.extract(:th)
-
-    vertex_list = VertexList.resolve(2, label)
-    if Symbol === p then p = @@register[p] end
-    if Symbol === q then q = @@register[q] end
-    vertex_list.accommodate [p, q]
-
-    { :vertex_list => vertex_list,
-      :p => p, :q => q, :move => move, :r => r, :th => th }
-  end  # Segment.parse
+    # _s_ is a Specification object.
+  def Segment.parse_specific(s)
+    s.extract_alias [:p, :start], [:q, :end]
+    s.extract(:move, :r, :th)
+    s.resolve_points(:p, :q)
+  end
 
 end; end  # module RGeom; class Segment
 
@@ -180,9 +171,10 @@ module RGeom
       when "TF"
         # @q = construct_second_point
         # We'll implement the above later.  Only dealing with simple segments for now.
-        Err.incompletely_defined_segment(data.label)
+        raise RGeom::Err::SpecificationError, "Segment #{@data.inspect}"
+        Err.invalid_spec(:segment, @data, "...")
       when "FF"
-        Err.incompletely_defined_segment(data.label)
+        Err.invalid_spec(:segment, @data, "...")
       end
       Segment.new(@data.vertex_list)
     end

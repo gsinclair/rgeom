@@ -54,44 +54,45 @@ module RGeom; class Triangle
 
   def Triangle.label_size; 3; end
 
-    # See Shape.parse_specific
-  def Triangle.parse_specific(a, label)
-    vertex_list = VertexList.resolve(3, label)
-    type   = a.extract(:equilateral, :isosceles, :scalene)
-    base   = a.extract(:base)
-    height = a.extract(:height)
-    angles = a.extract(:angles, :angle)
-    sides  = a.extract(:sides, :side)
-    sas    = a.extract(:sas)
-
-    if a.contains?(:right_angle)
-      raise ArgumentError unless type.nil?
-      type = :right_angle
-      right_angle = a.extract(:right_angle)
+    # This method parses the arguments that are specific to a triangle.
+    # The specification comes preloaded with the label and the vertex list.
+    #   @s : Specification
+    #   @a : ArgumentProcessor
+    #   @return : Nothing important; it modifies _s_.
+  def Triangle.parse_specific(s)
+    s.extract_one(:type, [:equilateral, :isosceles, :scalene])
+    s.extract(:base, :height, :sas)
+    s.extract_alias([:sides, :side], [:angles, :angle])
+    if s.extract(:right_angle)
+      Err.invalid_spec(:triangle, s, ":#{s.type} and :right_angle") if s.type?
+      s.type = :right_angle
     end
 
-    case base      # Base will be interpreted as a length.  If it was used to specify
-    when Numeric   # an interval or a couple of points, we need to process it.
-      # Nothing to see here...
-    when nil
-      # That's OK too.
+      # s.base will be interpreted as a length.  If it was used to specify an
+      # interval or two points, we need to process it.
+      # TODO this should be moved to a different method (post_parse or something)
+    case s.base
+    when Numeric, nil
+      # Nothing to do.
     when Symbol
       # triangle(:base => :AC, ...)
-      vertex_names = base.split
-      points = @@register.retrieve_points(vertex_names) + [nil]
-      vertex_list.accommodate(points)
-      base = nil
+      points = @@register.retrieve_points(s.base.split)
+      s.accommodate points
+      s.base = nil
     when Array
       # triangle(:base => [p(5,3), p(-1,2)], ...)
-      points = base + [nil]
-      vertex_list.accommodate(points)
-      base = nil
+      points = s.base + [nil]
+      s.accommodate(points)
+      s.base = nil
     when Segment
-      points = [base.p, base.q, nil]
-      vertex_list.accommodate(points)
+      points = [s.base.p, s.base.q, nil]
+      s.accommodate(points)
     else
       Err.invalid_base_spec(base)
     end
+    # TODO: when the DSL is implemented, we will have
+    #   shape :triangle, :label_size => 3, :base => 'Num,Seg', ...
+    # and the 'Seg' part will take care of the above code.
 
     # type = :scalene if type.nil?
     # ^^^^ No default type.  If none is provided, we work out what's required
@@ -99,13 +100,7 @@ module RGeom; class Triangle
     # 
     # If triangle(:ABC), then maybe all points are known. 
     # If triangle(:ABC, :sides => [4,6,5]), then there's the info to create it.
-
-    {
-      :vertex_list => vertex_list, :type => type,
-      :base => base, :height => height, :angles => angles, :sides => sides,
-      :right_angle => right_angle, :sas => sas,
-    }
-  end  # Triangle.parse
+  end
 
 end; end  # module RGeom; class Triangle
 

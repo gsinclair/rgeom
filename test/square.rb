@@ -53,7 +53,7 @@ class TestSquare < Test::Unit::TestCase
   end
 
   def test_3c_angled_square_A_and_B_defined
-    square(:base => segment(:AB)).tap do |s|
+    square(:base => _segment(:AB)).tap do |s|
       assert_square s, %w(3 1   7 -2   10 2   6 5)
       assert_equal 5, s.side
     end
@@ -76,7 +76,7 @@ class TestSquare < Test::Unit::TestCase
   end
 
   def test_4c_angled_square_other_way_around
-    square(:base => segment(:BA)).tap do |s|
+    square(:base => _segment(:BA)).tap do |s|
       assert_square s, %w(7 -2   3 1   0 -3   4 -6)
       assert_equal 5, s.side
     end

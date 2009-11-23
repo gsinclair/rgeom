@@ -1,9 +1,39 @@
 * Allow circles to have labels like :C1, not just :C
+
 * ArgumentProcessor to enforce things like "can't specify both diameter and
   radius", in order to catch errors earlier and simplify construction code.
+
 * Consider whether arcs should be allowed to have labels.
   They do at the moment, just like circles.  But it seems
   unnecessary.
+
 * Consider refactoring such that Circle < Arc.  A circle
   really is a special case of an arc, where the angles are
   0 and 360 degrees!
+
+* shape DSL, like
+    shape :triangle,
+            :label_size => 3,
+            :arguments => {
+              :base        => 'Num,Seg',  # Seg can be a real segment or :AC
+              :height      => 'Num',
+              :angles      => '[N]',
+              :sides       => '[N]',
+              :type        => [:scalene, :equilateral, :isosceles],
+              :right_angle => 'Sym',
+              :angle       => 'alias :angles',
+              :side        => 'alias :sides'
+            }
+  This DSL can generate the class, complete with self.label_size and
+  self.category, do the parsing and type verification, and insert the require or
+  autoload statement.  Shape.create then becomes:
+    def Shape.create(*args)
+      spec = self.parse(*args)
+      self.verify_spec(spec, *args)
+      self::Constructor.construct(spec)
+    end
+
+* Specification object should contain a copy of the argument list to aid error
+  reporting.  That means it can create its own ArgumentProcessor and therefore
+  avoid the repetitive code s.extract(a, :side) -- i.e. the 'a' is not
+  necessary.
