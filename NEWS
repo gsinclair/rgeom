@@ -1,5 +1,13 @@
 [This file functions as a development log.]
 
+23 Nov 2009:
+  [spec_label branch off c0994f4b]
+  Creating Specification class to simplify the collection and
+  verification of shape data, and Label to simplify working with
+  labels.  Will retrofit all code to use these.  Paused work on
+  Polygon to do this.
+
+
 22 Nov 2009:
   Implemented opt-in shape registration instead of opt-out.
   Calling circle(...) used to mean that circle was added to the
