@@ -5,6 +5,7 @@ module RGeom
     fattrs :x, :y
     include Math
     PRECISION_DEFAULT = 3    # for printing
+    @@register = Register.instance
 
       # Defines a point by _cartesian_ coordinates.  See Point.polar.
     def initialize(x,y)
@@ -94,6 +95,7 @@ module RGeom
       #   p1 == p2 == p3
       #
       #   Point[nil]   # --> nil
+      #   Point[:A]    # --> looks up :A in the register
     def Point.[](*args)
       args = args.flatten
       case args.first
@@ -101,6 +103,8 @@ module RGeom
         return args.first
       when nil
         return nil
+      when Symbol
+        return @@register[args.first]
       else
         return Point.new(*args)
       end

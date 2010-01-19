@@ -1,19 +1,18 @@
 # RGeom -- create geometric diagrams with Ruby
 # 
-# Example:
+# Simple example:
 #
 #   require 'rgeom'
-#
 #   triangle(:ABC, :equilateral)
-#
 #   render('triangle.png')
+#
+# See http://rgeom.rubyforge.org for more examples, including code and images.
 
 
 
 # *----------------* General-purpose includes *----------------*
 
 require 'rubygems'
-require 'set'
 require 'yaml'
 require 'pp'
 require 'extensions/object'
@@ -21,10 +20,13 @@ require 'extensions/enumerable'
 require 'extensions/string'
 require 'fattr'    # Ara Howard's souped-up attributes
 require 'singleton'
-require 'ruby-debug'
 require 'dev-utils/debug'
 require 'term/ansicolor'
 require 'facets/dictionary'
+require 'ostruct'
+require 'ruby-debug'
+gem 'awesome_print'
+require 'ap'
 
 class String; include Term::ANSIColor; end
 
@@ -36,6 +38,13 @@ module RGeom
 
   class Err; end         # Errors that can be raised.
   require 'rgeom/err'
+  require 'rgeom/err/dsl'
+
+  require 'rgeom/support'
+  include Support        # This modifies some built-in classes.
+
+  class Label; end
+  require 'rgeom/label'
 
   class Row; end         # What the register stores.
   class Register; end    # Keeps track of geometric constructs.
@@ -52,79 +61,28 @@ module RGeom
   class VertexList; def initialize(a,b); end; end
   require 'rgeom/vertex'
 
-  class Shape; end
+  class Shape; end       # Superclass of anything that can be drawn.
   require 'rgeom/shape'
 
-  class Segment < Shape; end
-  require 'rgeom/shape/segment'
+  module Shapes; end     # Container for builtin shapes.
 
-  class Triangle < Shape; end
-  require 'rgeom/shape/triangle'
+  class Shapes::Segment < Shape; end
+  require 'rgeom/shapes/segment' # Segment is required for the DSL.
 
-  class Circle < Shape; end
-  require 'rgeom/shape/circle'
+  require 'rgeom/dsl'            # A DSL for specifying shapes and their parameters.
+  require 'rgeom/shapes/specs'   # Specifications of the inbuilt shapes.
 
-  class Arc < Shape; end
-  require 'rgeom/shape/arc'
+  require 'rgeom/shapes/segment' # Segment implementation (already required above)
+  require 'rgeom/shapes/circle'  # Circle implementation
+  require 'rgeom/shapes/arc'     # etc.
+  require 'rgeom/shapes/semicircle'
+  require 'rgeom/shapes/square'
+  require 'rgeom/shapes/triangle'
 
-  class Square < Shape; end
-  require 'rgeom/shape/square'
-  # etc.
+  module Commands; end           # pt(), seg(), render(), etc.
+  require 'rgeom/commands'       # For inclusion in top-level.
 
-  module Commands; end   # triangle(), circle(), p(), etc. (for inclusion to top-level).
-  require 'rgeom/commands'
-
-  module Support
-    class ArgumentProcessor; end
-    class Specification; end
-    class Label; end
-    class ::Integer
-        # 35.d means 35 degrees; it's just decoration.
-      def d; self; end
-    end
-    module ::Kernel
-      undef :p   # We use p for creating a point.
-    end
-    class ::Float
-      def Float.close?(a, b, tolerance=0.000001)
-        (a - b).abs < tolerance
-      end
-    end
-    class ::Object
-      def blank?
-        self.nil? or ((self.respond_to? :empty?) and self.empty?)
-      end
-    end
-    class ::Numeric
-      D2R_MUlTIPLIER = Math::PI / 180.0
-      R2D_MULTIPLIER = 180.0 / Math::PI
-      def in_radians; self * D2R_MUlTIPLIER; end
-      def in_degrees; self * R2D_MULTIPLIER; end
-    end
-    class ::Array
-        # [1,2,3].return_value    == [1,2,3]
-        # [5].return_value        == 5
-      def return_value
-        (self.size == 1) ? self.first : self
-      end
-    end
-    class ::Symbol   # TODO this stuff will be replaced by Label
-        # :ABC -> [:A, :B, :C]
-      def split; self.to_s.split(//).map { |c| c.to_sym }; end
-      def length; to_s.length; end
-    end
-    class Util       # TODO so will this
-        # :XMP => "MPX"
-      def Util.sort_symbol(sym)
-        sym.to_s.split(//).sort.join
-      end
-    end
-  end
-
-  require 'rgeom/support'
-  include Support
-
-  module Assertions; end  # For testing.
+  module Assertions; end         # For testing.
   require 'rgeom/assertions'
 end
 

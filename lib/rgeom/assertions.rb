@@ -29,7 +29,7 @@ module RGeom::Assertions
     assert_close vals.shift, circle.centre.x, 0.00001, "x"
     assert_close vals.shift, circle.centre.y, 0.00001, "y"
     assert_close vals.shift, circle.radius, 0.00001, "r"
-    assert_equal vals.shift, circle.label.symbol, "label"
+    assert_equal vals.shift, circle.label.safe_send(:symbol), "label"
   end
 
   def assert_arc(vals, arc)

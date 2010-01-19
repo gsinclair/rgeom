@@ -6,7 +6,7 @@ include RGeom
 
 class TestSpiralDiagram < Test::Unit::TestCase
 
-  NTRIANGLES = 10
+  NTRIANGLES = 50
   FILENAME   = "out/spiral-#{NTRIANGLES}.png"
 
   def setup

@@ -13,14 +13,16 @@ module RGeom
       # Shape.create is the engine behind the user-level methods like
       # circle(...), segment(...), etc.
     def Shape.create(*args)
-      data = self.parse(*args)
-      self.construct(data)
+      debug "#{self}::create(#{args.inspect})"
+      #debugger if $test_unit_current_test =~ /comma/
+      spec = self.shape_properties.generate_construction_spec(args)
+      debug spec if $test_unit_current_test =~ /comma/
+      self.construct(spec)
     end
 
-      # e.g. You can call Triangle.construct(data) where data is an instance of
-      # Triangle::Data.  The need to do this should be rare!
-    def Shape.construct(data)
-      self::Constructor.new(data).construct
+      # To be implemented for each subclass.  Called by :create above.
+    def Shape.construct(spec)
+      Err.not_implemented
     end
 
     #

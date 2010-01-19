@@ -3,10 +3,32 @@ module RGeom
   
   module Commands
 
-    def p(*args)
+    def pt(*args)
       Point[*args]
     end
+    alias p pt
 
+      # Examples:
+      #   seg p(1,1), p(-5,8)
+      #   seg _segment(:AB)
+      #   seg :AB
+      #   seg nil      # -> nil
+    def seg(*args)
+      args = args.flatten
+      case args.map { |x| x.class }
+      when [Segment]
+        args.first
+      when [Symbol]
+        Segment.from_symbol(args.first)
+      when [Point, Point]
+        Segment.simple(*args)
+      when [NilClass]
+        nil
+      else
+        nil
+      end
+    end
+    alias s seg
 
       # points :A => [4,1], :B => [5,-3], :C => p(3,0)
     def points(pts={})
@@ -17,13 +39,26 @@ module RGeom
       nil
     end
 
-
-
       # midpoint(:AC)
     def midpoint(labels)
       segment(labels).midpoint
     end
 
+    def generate(*args, &block)
+      Shape.generate(*args, &block)
+    end
+
+    def render(filename, *args)
+      Diagram.new(filename).render(*args)
+    end
+
+  end
+end
+
+__END__
+
+### These commands are now generated automatically (or they will be when
+### the DSL is complete).  Delete them when the time comes.
 
     def _segment(*args) Segment.create(*args) end
     def _circle(*args)  Circle.create(*args)  end
@@ -64,63 +99,6 @@ module RGeom
         args << Hash[:angles => [0,180]]
       end
       Arc.create(*args)
-    end
-
-    # Consider this method:
-    #
-    #   def triangle(*args)
-    #     _triangle(*args).register
-    #   end
-    #
-    # That is, <tt>_triangle</tt> creates a triangle but doesn't register it.
-    # <tt>triangle()</tt> creates a triangle and registers it.  That's an easy
-    # way for the user to choose whether a shape will be drawn or not.  (They
-    # may want to "create" a shape just for the purpose of constructing another
-    # one.)
-    #
-    # This block generates such methods for triangle, segment, etc.
-    #
-
-#   [:triangle, :segment, :circle, :arc, :square, :semicircle].each do |method|
-#     underscore_method = "_#{method}"
-#     define_method(method) { |*args|
-#       send(underscore_method, *args).register
-#     }
-#   end
-
-
-
-
-=begin (some circle docs to use somewhere sometime)
-      # Some examples:
-      #   circle(:H, :centre => :P, :radius => 5)
-      #   circle(:H, :centre => :P, :diameter => 10)
-      #   circle(:H, :centre => :P, :radius => :AB)    where :AB is an existing segment
-      #   circle(:H, :centre => :P, :diameter => :MP)
-      #   circle(:K, :radius => :AB)                   implies centre = :A
-      #   circle(    :diameter => :MN)                 implies centre = midpoint :AB
-      #   circle(:L, :centre => p(2,6), :radius => 14)
-      #   circle(:L, :centre => p(2,6), :diameter => 28)
-      #   circle(    :diameter => :MN, :centre => p(3,0))
-      # 
-      # * Label is optional and cannot be derived from the other information.
-      # * A centre can be a Point or a Symbol.
-      # * A radius can be a number or a Symbol, and the symbol can mean the phyical
-      #   radius or a segment indicating its length.
-      # * The diameter is like the radius in this respect.
-      # * Anytime a two-letter symbol is given, it must resolve.  You can't create
-      #   points implicitly through a circle; it doesn't make much sense.
-=end
-
-
-    def generate(*args, &block)
-      Shape.generate(*args, &block)
-    end
-
-
-
-    def render(filename, *args)
-      Diagram.new(filename).render(*args)
     end
 
   end  # module Commands

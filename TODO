@@ -39,3 +39,35 @@
   necessary.
 
 * List of relatively minor items in commit f94afdb6
+
+* Enable the creation of *groups* of objects which can then be copied and
+  transformed.
+
+* Consider the area of a circle as a bunch of rectangles, like so
+
+            --             We would want to mark the lengths 2(pi)r
+          ------           along the bottom and r up the left side.
+        ----------         As the rectangles get thinner, this approaches
+      --------------       a triangle.  A = 0.5 * 2(pi)r * 5 = (pi)r^2
+
+  To create the diagram:
+
+    rects = (0..3).map { |i|
+      base = 8 - 2*i            # 8, 6, 4, 2
+      rectangle :base => base, :height => 1, :centre => ( p(0,0) + i*v(0,1) )
+    }
+
+    a, b, c, d = Shape.bounding_box(rects).points
+
+    mark_length :segment => [a,d], :style => :architectural, :padding => 0.5,
+                                   :text => 'r'
+    mark_length :segment => [a,b], :style => :architectural, :padding => 0.5,
+                                   :text => '2(pi)r'
+
+  Some good ideas in there:
+   * Creating rectangles with a _centre_
+   * Accessing the bounding box for a group of objects
+   * Marking lengths
+
+* Access to objects via their labels like Circle[:K].
+    - Does this exist already?

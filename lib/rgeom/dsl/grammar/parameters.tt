@@ -1,0 +1,74 @@
+grammar Parameters
+
+  rule parameters
+    parameter (sep parameter)*
+  end
+
+  rule parameter
+    parameter_name (colon parameter_type)? 
+  end
+
+  rule sep
+    ', '
+  end
+
+  rule colon
+    ': '
+  end
+
+  rule parameter_name
+    word
+  end
+
+  rule parameter_type
+    simple_type / array_type / compound_type {
+      def data
+        puts "About to call [[ parameter_type.text_value ]]"
+        parameter_type.text_value
+        #[simple_type.text_value, array_type.text_value, compound_type.text_value]
+        #text_value
+        #elements[0].data
+      end
+    }
+  end
+
+  rule compound_type
+    '(' simple_type (',' simple_type)+ ')' {
+      def data
+        [:compound, text_value]
+      end
+    }
+  end
+
+  rule simple_type
+    word ('=' default_value)? {
+      def data
+        [:simple, text_value]
+        #[:simple, word.text_value, :default, default_value.text_value]
+      end
+    }
+  end
+
+  rule array_type
+    '[' comma_separated_words ']' {
+      def data
+        [:array, text_value]
+        #[:array, comma_separated_words.text_value]
+      end
+    }
+  end
+
+  rule default_value
+    [A-z0-9.-]+
+  end
+
+  rule comma_separated_words
+    word (',' word)+
+  end
+
+  rule word
+    [a-z_]+
+  end
+
+end
+

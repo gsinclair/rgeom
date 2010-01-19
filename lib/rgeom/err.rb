@@ -85,13 +85,17 @@ module RGeom;
     #   @shape : Symbol, like :triangle, :segment, etc.
     #   @spec  : Specification object
     #   @msg   : String providing details about the error
+    #
+    # NOTE: we're in flux between the old specification code and the new DSL;
+    # this method is in flux too, and will be great when we have a nice new
+    # ConstructionSpec class!
     def invalid_spec(shape, spec, msg)
       message = %{
         Invalid specification for shape '#{shape.to_s.green.bold}'.
         Details: #{msg.red.bold}
-        Arguments: #{spec.args.inspect.green.bold}
-      }.tabto(0).trim
-      raise SpecificationError, message.yellow.bold
+        Arguments:
+      }.tabto(0).trim + spec.to_s.indent(4).green.bold
+      raise RGeom::Err::SpecificationError, message.yellow.bold
     end
 
     def invalid_circle_spec(args)
@@ -133,6 +137,29 @@ module RGeom;
       raise StandardError, msg.yellow.bold
     end
 
+    def invalid_label_specified(name, label)
+      msg = %{Invalid label specified for shape <#{name}>: #{label.inspect}}
+      raise RGeom::Err::SpecificationError, msg.yellow.bold
+    end
+
+    def no_parameter_spec_matches_arguments(keyword_args, parameter_sets)
+      parameter_sets_str = parameter_sets.join("\n")
+      msg = %{
+        The keyword arguments provided do not match any specified parameter set.
+          Arguments: #{keyword_args.inspect}
+          Parameter sets:
+      }.tabto(0).trim + parameter_sets_str.indent(4)
+      raise RGeom::Err::SpecificationError, msg.yellow.bold
+    end
+
+    def problem_processing_arguments(keyword_args, msg)
+      msg = %{
+        Error occurred while processing the arguments
+          Arguments: #{keyword_args.inspect}
+          Message:   #{msg}
+      }.tabto(0).trim
+      raise RGeom::Err::SpecificationError, msg.yellow.bold
+    end
   end  # class << Err
 end  # module RGeom
 
