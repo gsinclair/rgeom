@@ -1,5 +1,52 @@
 [This file functions as a development log.]
 
+19 Jan 2010:
+  Finishing work on spec_label branch and merging it into master.
+  Labels work and provide basic encapsulation of labels like :ABC.
+  Specification replaces classes like Triangle::Data and so reduces
+  the amount of boilerplate code.  Some of the things that have been
+  implemented in Specification (e.g. type checking) aren't used by
+  client code.
+
+  It's a while ago that I started this branch and I've been on holiday
+  in the meantime.  I don't know if I implemented everything I had in
+  mind; I just wanted to tidy it up (all tests pass) and move on.
+
+  The next step is a DSL for specifying shapes to reduce boilerplate
+  code to an absolute minimum and enable the creation of new "shapes"
+  such as histograms.  Example:
+
+    shape :circle, :label => :K,
+      :arguments => %{
+        radius: segment
+        diameter: segment
+        centre: point=origin, radius: length=1
+        centre: point=origin, diameter: length
+      }
+
+    datatype :segment,
+      :match => [
+        lambda { |o| o.is_a? Segment and o },
+        lambda { |o| o.symbol? and Segment[o] }
+      ]
+
+    datatype :point, ...
+    datatype :length, ...
+
+  This achieves many things.  It shows that a circle's label is only
+  one character.  It lays out the possible argument combinations that
+  can be given to the "circle" command, and the types and default
+  values (if any).  This will enable automatic checking: has a valid
+  set of arguments been given?  Are they the right type?  Casting will
+  be done automatically: if a segment is expected, then a real Segment
+  object can be given, or a symbol like :XY.  It's pretty cool, but
+  implementing it won't be easy.  The "arguments" spec is a string; I
+  need to parse it and generate the backroom classes and methods that
+  process, cast and validate the user's arguments so that the construc-
+  tion methods can do their work with a minimum of error-checking.
+
+  "dsl" branch will be created for this work.
+
 23 Nov 2009:
   [spec_label branch off c0994f4b]
   Creating Specification class to simplify the collection and

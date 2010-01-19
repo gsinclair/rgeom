@@ -94,8 +94,7 @@ module RGeom
       # Returns a Specification object.
     def Shape.parse(*args)
       preprocess_arguments(args) do |a|
-        Specification.new(a) do |s|
-          s.resolve_vertex_list(self.label_size)
+        Specification.new(self::CATEGORY, a, self.label_size) do |s|
           parse_specific(s)
           s.unprocessed = a.unprocessed
         end
@@ -109,7 +108,7 @@ module RGeom
       #
       # _a_ is an ArgumentProcessor; _label_ is :ABC or :XP__ or nil or
       # whatever.
-    def Shape.parse_specific(a, label)
+    def Shape.parse_specific(a)
       raise "Not implemented in base class"
     end
 

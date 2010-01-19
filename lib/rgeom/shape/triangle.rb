@@ -9,7 +9,7 @@
 # triangle(:LMK, :base => 8, :angles => [75.d, 22.d])
 #  - scalene triangle with :LM as the base, and :K determined by the angles
 #
-# triangle(:ABC, :right => :A, :base => 3, :height => 5)
+# triangle(:ABC, :right_angle => :A, :base => 3, :height => 5)
 #  - AB is the base, right angle at A, base and height as given
 #
 # triangle(:ABD, :equilateral)

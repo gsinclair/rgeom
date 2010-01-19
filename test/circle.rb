@@ -17,7 +17,7 @@ class TestCircle < Test::Unit::TestCase
       assert_circle [0,0, 1, nil], c
       assert_equal :circle, c.category
       assert_equal :cir01,  c.id
-      assert_equal nil,     c.label
+      assert_equal nil,     c.label.symbol
     end
   end
 
@@ -26,7 +26,7 @@ class TestCircle < Test::Unit::TestCase
       assert_circle [5,2, 1, :G], c
       assert_equal :circle, c.category
       assert_equal :cir01,  c.id
-      assert_equal :G,      c.label
+      assert_equal :G,      c.label.symbol
     end
   end
 
@@ -112,7 +112,7 @@ class TestCircle < Test::Unit::TestCase
       assert_circle [3,-9, Math.sqrt(17)/2, :X], c
       assert_equal :circle, c.category
       assert_equal :cir01,  c.id
-      assert_equal :X,      c.label
+      assert_equal :X,      c.label.symbol
     end
   end
 

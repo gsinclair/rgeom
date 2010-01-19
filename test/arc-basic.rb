@@ -20,7 +20,7 @@ class TestArcBasic < Test::Unit::TestCase
       assert_arc   [0,0, 1, nil, 5,7], a
       assert_equal :arc,    a.category
       assert_equal :arc01,  a.id
-      assert_equal nil,     a.label
+      assert_equal nil,     a.label.symbol
     end
   end
 
@@ -29,7 +29,7 @@ class TestArcBasic < Test::Unit::TestCase
       assert_arc   [5,2, 1, :G, 5,7], a
       assert_equal :arc,    a.category
       assert_equal :arc01,  a.id
-      assert_equal :G,      a.label
+      assert_equal :G,      a.label.symbol
     end
   end
 
@@ -113,7 +113,7 @@ class TestArcBasic < Test::Unit::TestCase
       assert_arc   [3,-9, Math.sqrt(17)/2, :X, 5,7], a
       assert_equal :arc,    a.category
       assert_equal :arc01,  a.id
-      assert_equal :X,      a.label
+      assert_equal :X,      a.label.symbol
     end
   end
 

@@ -7,14 +7,21 @@ module RGeom::Support
     @@register = RGeom::Register.instance
 
       # E.g.
-      #   Specification.new(:triangle, a) do |s|
-      #     s.resolve_vertex_list(:ABC)
+      #   Specification.new(:triangle, a, 3) do |s|
       #     s.extract(:base, :height, :angle)
       #   end
-    def initialize(arg_processor)
-      @ap   = arg_processor
-      @data = Dictionary.new
-      process_data(:label, nil)   # default value for label
+      #
+      # Handles the extraction and processing of the label on initialisation.
+      #
+      #   @shape_name    : e.g. <tt>:triangle</tt>, used to formulate
+      #                    error messages
+      #   @arg_processor : ArgumentProcessor
+      #   @label_size    : number of characters in label (e.g. 3 for triangle)
+    def initialize(shape_name, arg_processor, label_size)
+      @shape_name = shape_name
+      @ap         = arg_processor
+      @data       = Dictionary.new
+      self.resolve_vertex_list( label_size )
       yield self
     end
 
@@ -28,21 +35,20 @@ module RGeom::Support
     def to_s(format=:short)
       case format
       when :short
-        "Specification: #{@data.inspect}"
+        "Specification (#@shape_name #@label): #{@data.inspect}"
       when :long
         @length ||= @data.keys.map { |k| k.to_s.length }.max
-        "Specification:\n" + @data.map { |k,v|
+        "Specification (#@shape_name #@label):\n" + @data.map { |k,v|
           "  %-*s   %s\n" % [@length, k, v.inspect] }.join
       else
         raise "Invalid format: #{format}"
       end
     end
 
-      # Sets @data[:vertex_list] to a VertexList object based on the given label.
-    def resolve_vertex_list(n, label=nil)
-        # TODO is the label parameter necessary, given that the object is
-        #      initialised with one?
-      label ||= @ap.extract_label(n)
+      # Extracts a label of the given size, and creates a vertex list based on
+      # it.  TODO perhaps Label can be more rich and VertexList can be deprecated.
+    def resolve_vertex_list(n)
+      label = Label.new( @ap.extract_label(n) )
       process_data :label, label
       process_data :vertex_list, VertexList.resolve(n, label)
     end

@@ -114,7 +114,8 @@ module RGeom
         if label.nil?
           [Array.new(n, :_), Array.new(n, nil)]
         else
-          names = label.split
+          label = Label[label]
+          names = label.symbols
           # TODO ensure _n_ names; otherwise we can have :radius => :ABC
           points = names.map { |name| @@register[name] }
           [names, points]

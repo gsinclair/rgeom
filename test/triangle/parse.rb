@@ -27,7 +27,7 @@ class TestTriangleParse < Test::Unit::TestCase
 
   def test_02
     data = Triangle.parse(:GMK, :isosceles, :base => 8)
-    assert_equal :GMK, data.label
+    assert_equal :GMK, data.label.symbol
     assert_equal [:G, :M, :K], data.vertex_list.vertex_names
     assert_equal [nil, nil, nil], data.vertex_list.points
     assert_equal :isosceles, data.type
@@ -110,7 +110,7 @@ class TestTriangleParse < Test::Unit::TestCase
 
   def test_10_triangle_with_anonymous_points
     data = Triangle.parse(:base => [p(1,1), p(5,3)], :right_angle => :apex, :height => 3)
-    assert_equal nil, data.label
+    assert_equal nil, data.label.symbol
     assert_equal [:_, :_, :_], data.vertex_list.vertex_names
     assert_equal [p(1,1), p(5,3), nil], data.vertex_list.points
     assert_equal nil, data.base
@@ -122,7 +122,7 @@ class TestTriangleParse < Test::Unit::TestCase
 
   def test_11_triangle_with_base_as_interval
     data = Triangle.parse(:base => :CY, :angles => [45.d, 21.d])
-    assert_equal nil, data.label
+    assert_equal nil, data.label.symbol
     assert_equal [nil, nil, nil], data.vertex_list.points
     assert_equal [:_, :_, :_], data.vertex_list.vertex_names
     assert_equal nil, data.base
