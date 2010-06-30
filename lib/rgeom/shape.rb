@@ -85,35 +85,6 @@ module RGeom
       self.class::CATEGORY
     end
 
-      # Helps to process the arguments like <tt>:base => :AC, :angle => 45</tt>, etc.
-    def Shape.preprocess_arguments(args)
-      yield ArgumentProcessor.new(args)
-    end
-
-      # Shape.parse provides the general parsing of shape data (label, unprocessed) and
-      # calls parse_specific to get the details of the particular shape.
-      # 
-      # Returns a Specification object.
-    def Shape.parse(*args)
-      preprocess_arguments(args) do |a|
-        Specification.new(self::CATEGORY, a, self.label_size) do |s|
-          parse_specific(s)
-          s.unprocessed = a.unprocessed
-        end
-      end
-    end
-
-      # Each shape needs to parse its arguments in unique ways, but there is
-      # common stuff too, like the label.  This method, implemented in Triangle,
-      # Segment, etc., parses the stuff that is specific to that shape and
-      # returns a hash of the things it's parsed.
-      #
-      # _a_ is an ArgumentProcessor; _label_ is :ABC or :XP__ or nil or
-      # whatever.
-    def Shape.parse_specific(a)
-      raise "Not implemented in base class"
-    end
-
     def Shape.generate_1(n, first, &generator)
       object = first
       (n-1).times do
@@ -232,34 +203,5 @@ module RGeom
     end
 
   end  # class Shape
-
-
-
-
-    # Used for parsing the arguments to triangle(), circle(), etc.
-    # Subclassed by TriangleData, CircleData, etc.
-    # What do they all have in common?
-    #  * Label (:ZCL, :H, ...)
-    #  * Vertex list
-    #  * Unprocessed arguments
-    #  * "Givens"
-    #
-    # The last two items haven't been used as yet, but it's easy to keep them.
-  class Shape::Data
-    fattr :label, :vertex_list, :unprocessed, :givens
-
-    def initialize(hash)
-      hash.each_pair do |k,v|
-        send k, v
-      end
-    end
-    def to_s(format=:long)
-      raise "Not implemented (should be in subclass)"
-    end
-    def inspect; to_s; end
-    def values_at(*args)
-      args.map { |a| self.send a }
-    end
-  end  # class ShapeData
 
 end  # module RGeom

@@ -3,8 +3,6 @@ module RGeom
 
   module Support
 
-    class ArgumentProcessor; end
-    class Specification; end    # NOTE: Unneeded after DSL is running.
     class Label; end
 
     class ::Integer
