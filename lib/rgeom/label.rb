@@ -35,7 +35,7 @@ module RGeom
       self.freeze
     end
     def Label.[](symbol)
-      Label.new(symbol)
+      (symbol.nil?) ? nil : Label.new(symbol)
     end
     def to_s; @string; end
     def inspect; "Label[#{@symbol.inspect}]"; end

@@ -3,6 +3,13 @@ module RGeom
 
   module Support
 
+    # TODO: Implement debuglog gem!
+    module ::Kernel
+      def debug(msg)
+        :no_op
+      end
+    end
+
     class Label; end
 
     class ::Integer
@@ -24,6 +31,9 @@ module RGeom
       def blank?
         self.nil? or ((self.respond_to? :empty?) and self.empty?)
       end
+      def not_nil?
+        not nil?
+      end
       def safe_send(message)
         if self.respond_to? message
           self.send message
@@ -35,6 +45,9 @@ module RGeom
         x = obj
         yield x
         return x
+      end
+      def in?(collection)
+        collection.include?(self)
       end
     end
     
@@ -54,6 +67,40 @@ module RGeom
         # [5].return_value        == 5
       def return_value
         (self.size == 1) ? self.first : self
+      end
+    end
+
+    module ::Enumerable
+      # numbers  = (1..3)
+      # squares  = numbers.build_hash { |n| [n, n*n] }   # 1=>1, 2=>4, 3=>9
+      # sq_roots = numbers.build_hash { |n| [n*n, n] }   # 1=>1, 4=>2, 9=>3
+      def build_hash
+        result = {}
+        self.each do |elt|
+          key, value = yield elt
+          result[key] = value
+        end
+        result
+      end
+      alias includes? include?
+      alias contains? include?
+    end
+
+    class ::String
+      # See http://extensions.rubyforge.org/rdoc/classes/String.html#M000033
+      def trim(margin=nil)
+        s = self.dup
+        # Remove initial blank line.
+        s.sub!(/\A[ \t]*\n/, "")
+        # Get rid of the margin, if it's specified.
+        unless margin.nil?
+          margin_re = Regexp.escape(margin || "")
+          margin_re = /^[ \t]*#{margin_re} ?/
+            s.gsub!(margin_re, "")
+        end
+        # Remove trailing whitespace on each line
+        s.gsub!(/[ \t]+$/, "")
+        s
       end
     end
 

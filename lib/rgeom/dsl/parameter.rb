@@ -278,7 +278,7 @@ module RGeom; module DSL
           # Return a pretty string representation with some of the detail removed.
         def pretty
           regex = /"[A-z]?"$/
-          self.pp_s.lines.reject { |l| l =~ regex }.join
+          self.pretty_inspect.lines.reject { |l| l =~ regex }.join
         end
 
         def subtext

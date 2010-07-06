@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+attest=../attest
+col=../col
+
+ruby -rubygems -I${col}/lib -I${attest}/lib ${attest}/bin/attest $*

@@ -13,10 +13,8 @@ module RGeom
       # Shape.create is the engine behind the user-level methods like
       # circle(...), segment(...), etc.
     def Shape.create(*args)
-      debug "#{self}::create(#{args.inspect})"
-      #debugger if $test_unit_current_test =~ /comma/
+      #debug "#{self}::create(#{args.inspect})"
       spec = self.shape_properties.generate_construction_spec(args)
-      debug spec if $test_unit_current_test =~ /comma/
       self.construct(spec)
     end
 

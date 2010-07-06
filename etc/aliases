@@ -1,7 +1,3 @@
-alias g='grep -nR lib -e'
-alias t='ctags -R lib'
-alias d='cat debug.log'
-
 #alias rt='ruby -W0 -Ilib test/all.rb'
 
 # We're using the _Windows_ Ruby so we can use Cairo

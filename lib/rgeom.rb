@@ -12,28 +12,26 @@
 
 # *----------------* General-purpose includes *----------------*
 
+time('rgeom -- external requires') {
 require 'rubygems'
 require 'yaml'
 require 'pp'
-require 'extensions/object'
-require 'extensions/enumerable'
-require 'extensions/string'
 require 'fattr'    # Ara Howard's souped-up attributes
 require 'singleton'
-require 'dev-utils/debug'
 require 'term/ansicolor'
 require 'facets/dictionary'
 require 'ostruct'
 require 'ruby-debug'
 gem 'awesome_print'
 require 'ap'
-
+}
 class String; include Term::ANSIColor; end
 
 
 
 # *----------------* Class and module directory *----------------*
 
+time('rgeom -- internal requires') {
 module RGeom
 
   class Err; end         # Errors that can be raised.
@@ -82,10 +80,13 @@ module RGeom
   module Commands; end           # pt(), seg(), render(), etc.
   require 'rgeom/commands'       # For inclusion in top-level.
 
-  module Assertions; end         # For testing.
-  require 'rgeom/assertions'
+  # The following code is commented out because of conflict between Attest and Test::Unit.
+  unless defined? Attest
+    module Assertions; end         # For testing.
+    require 'rgeom/assertions'
+  end
 end
-
+}  # time()
 
 
 # *----------------* Load all RGeom code *----------------*

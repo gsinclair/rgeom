@@ -68,7 +68,7 @@ module RGeom
       @by_category = Hash.new { |h,k| h[k] = [] }
       @by_label = Hash.new
       Row.reset_counts!
-      debug "Register initialised"
+      #debug "Register initialised"
     end
     private :init
 
@@ -147,7 +147,7 @@ module RGeom
       return nil if label.nil?
       key = "#{category}_#{RGeom::Util.sort_symbol(label)}"
       debug key
-      debug @by_label.pp_s
+      debug @by_label.pretty_inspect
       @by_label[key]
     end
 
