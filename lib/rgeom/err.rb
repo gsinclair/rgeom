@@ -152,6 +152,14 @@ module RGeom;
       raise RGeom::Err::SpecificationError, msg.yellow.bold
     end
 
+    def no_parameters_for_fixed_arg(fixed_arg)
+      msg = %{
+        The fixed argument provided does not have any parameters associated with it.
+          Fixed argument: #{fixed_arg.inspect}
+      }.tabto(0).trim
+      raise RGeom::Err::SpecificationError, msg.yellow.bold
+    end
+
     def problem_processing_arguments(keyword_args, msg)
       msg = %{
         Error occurred while processing the arguments

@@ -467,10 +467,6 @@ module RGeom; module DSL;
           {}
         end
 
-      # Now, do we have a label?  If so, it will be the first argument.  We extract it if
-      # it exists, and check that it's valid.  If it's not valid, there's no point
-      # continuing so we raise an error.
-
       # Now, do we have a label?  It's not compulsory, and there might be
       # another (fixed) argument, so we must proceed with caution.  If we can
       # extract one, we ensure it's valid before continuing.
@@ -505,11 +501,13 @@ module RGeom; module DSL;
     end
 
       # Looks for, removes, and returns a label from the given array.
+      # We do _not_ check to see that the label is valid for this shape; that's
+      # the responsibility of the caller of this method.
     def _extract_label(args)
       index = catch(:found) {
         args.each_with_index do |arg, idx|
           if l = Label[arg]
-            throw :found, idx if label_valid_for_this_shape?(l)
+            throw :found, idx
           end
         end
         nil
