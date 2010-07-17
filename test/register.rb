@@ -1,57 +1,46 @@
-require 'test/unit'
-require 'rgeom'
-require 'pp'
-
-require 'ruby-debug'
-
-include RGeom
-
-class TestRegister < Test::Unit::TestCase
-  def setup
+D "Register" do
+  D.< do
     @register = RGeom::Register.instance
     @register.clear!
-    debug ''
   end
 
-  def test_points_1
+  D "points :A => p(3,9) updates register" do
     points :A => p(3,9), :B => p(0,-2.543)
-    assert_equal p(3,9), @register[:A]
-    assert_equal p(0,-2.543), @register[:B]
-    assert_equal 2, @register.npoints
-    assert_equal 0, @register.nobjects
+    Eq @register[:A], p(3,9)
+    Eq @register[:B], p(0,-2.543)
+    Eq @register.npoints, 2
+    Eq @register.nobjects, 0
   end
 
-  def test_points_2
+  D "@register[:S] = p(4,3) updates register" do
     @register[:S] = p(4,3)
-    assert_equal p(4,3), @register[:S]
-    assert_equal 1, @register.npoints
-    assert_equal 0, @register.nobjects
-  end
-
-  def test_triangle
-    points :G => p(0,0), :M => p(1,0), :K => p(0.39,0.60)
-    t = triangle(:GMK)
-    assert_equal p(0,0), @register[:G]
-    assert_equal p(1,0), @register[:M]
-    assert_equal p(0.39,0.60), @register[:K]
-    assert_equal t, @register.by_label(:triangle, :GMK)
-# These don't work at the moment, and I'm not sure I care...
-#   assert_equal t, @register.retrieve(:triangle, :GKM)
-#   assert_equal t, @register.retrieve(:triangle, :KMG)
-#   assert_equal t, @register.retrieve(:triangle, :KGM)
-#   assert_equal t, @register.retrieve(:triangle, :MGK)
-#   assert_equal t, @register.retrieve(:triangle, :MKG)
-    assert_equal nil, @register[:A]
-    assert_equal nil, @register.by_label(:triangle, :ABC)
-    assert_equal 3, @register.npoints
-    assert_equal 1, @register.nobjects
-  end
-
-  def test_point_reassignment_raises_error
-    points :A => p(3,9), :B => p(0,-2.543)
-    assert_raises(ArgumentError) do
-      @register[:A] = p(4,-1)
+    Eq @register[:S], p(4,3)
+    Eq @register.npoints, 1
+    Eq @register.nobjects, 0
+    D "and p(:S) == p(4,3)" do
+      Eq p(:S), p(4,3)
     end
+  end
+
+  D "triangle(:GMK)" do
+    D "@register.by_label(:triangle, :GMK)" do
+      points :G => p(0,0), :M => p(1,0), :K => p(0.39,0.60)
+      t = triangle(:GMK)
+      Eq @register.by_label(:triangle, :GMK), t
+      Eq @register.by_label(:triangle, :GKM), t
+      Eq @register.by_label(:triangle, :KMG), t
+      Eq @register.by_label(:triangle, :KGM), t
+      Eq @register.by_label(:triangle, :MGK), t
+      Eq @register.by_label(:triangle, :MKG), t
+      Eq @register.by_label(:triangle, :ABC), nil
+      Eq @register.nobjects, 1
+    end
+  end
+
+  D "point reassignment raises error" do
+    points :A => p(3,9), :B => p(0,-2.543)
+    E(ArgumentError) { @register[:A] = p(4,-1) }
+    E(ArgumentError) { points    :A => p(4,-1) }
   end
 
 end

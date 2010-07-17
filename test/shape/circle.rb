@@ -1,143 +1,136 @@
-require 'test/unit'
-require 'rgeom'
-include RGeom::Assertions
-include RGeom
+D "Circle" do
 
-class TestCircle < Test::Unit::TestCase
-
-  def setup
+  D.< do
     @register = RGeom::Register.instance
     @register.clear!
     points :A => p(3,1), :B => p(6,1), :C => p(7,2)
-    #debug $test_unit_current_test
   end
 
-  def test_01
+  D "default -- centre p(0,0), radius 1" do
     circle().tap do |c|
-      assert_circle [0,0, 1, nil], c
-      assert_equal :circle, c.category
-      assert_equal :cir01,  c.id
-      assert_equal nil,     c.label
+      T :circle, c, [0,0, 1, nil]
+      Eq c.category, :circle
+      Eq c.id,       :cir01
+      Eq c.label,    nil
     end
   end
 
-  def test_02
+  D "given label, centre p(5,2)" do
     circle(:G, :centre => p(5,2)).tap do |c|
-      assert_circle [5,2, 1, :G], c
-      assert_equal :circle, c.category
-      assert_equal :cir01,  c.id
-      assert_equal :G,      c.label.symbol
+      T :circle, c, [5,2, 1, :G]
+      Eq c.category,     :circle
+      Eq c.id,           :cir01
+      Eq c.label.symbol, :G
     end
   end
 
-  def test_03
+  D "given label, centre p(5,2), radius 3" do
     circle(:G, :centre => p(5,2), :radius => 3).tap do |c|
-      assert_circle [5,2, 3, :G], c
+      T :circle, c, [5,2, 3, :G]
     end
   end
 
-  def test_04
+  D "given label, radius 9" do
     circle(:G, :radius => 9).tap do |c|
-      assert_circle [0,0, 9, :G], c
+      T :circle, c, [0,0, 9, :G]
     end
   end
 
-  def test_05
+  D "given centre :A" do
     circle(:centre => :A).tap do |c|
-      assert_circle [3,1, 1, nil], c
+      T :circle, c, [3,1, 1, nil]
     end
   end
 
-  def test_06
+  D "given centre :A, radius 4" do
     circle(:centre => :A, :radius => 4).tap do |c|
-      assert_circle [3,1, 4, nil], c
+      T :circle, c, [3,1, 4, nil]
     end
   end
 
-  def test_07
+  D "given centre :A, diameter 4" do
     circle(:centre => :A, :diameter => 4).tap do |c|
-      assert_circle [3,1, 2, nil], c
+      T :circle, c, [3,1, 2, nil]
     end
   end
 
-  def test_08
+  D "given centre :A, radius :BC" do
     circle(:centre => :A, :radius => :BC).tap do |c|
-      assert_circle [3,1, Math.sqrt(2), nil], c
+      T :circle, c, [3,1, Math.sqrt(2), nil]
     end
   end
 
-  def test_09
+  D "given centre :A, diameter :BC" do
     circle(:centre => :A, :diameter => :BC).tap do |c|
-      assert_circle [3,1, Math.sqrt(2)/2, nil], c
+      T :circle, c, [3,1, Math.sqrt(2)/2, nil]
       # Gotta test these methods once!
-      assert_equal p(3,1), c.centroid
+      Eq c.centroid, p(3,1)
       r = c.radius
-      assert_equal [p(3-r,1-r), p(3+r,1+r)], c.bounding_box
-      assert_equal [p(3,1)], c.points   # A circle's only 'point' is its centre.
+      Eq c.bounding_box, [p(3-r,1-r), p(3+r,1+r)]
+      Eq c.points, [p(3,1)]    # A circle's only 'point' is its centre.
     end
   end
 
-  def test_10
+  D "given radius :AB" do
     circle(:radius => :AB).tap do |c|
-      assert_circle [3,1, 3, nil], c
+      T :circle, c, [3,1, 3, nil]
     end
   end
 
-  def test_11
+  D "given radius :BA" do
     circle(:radius => :BA).tap do |c|
-      assert_circle [6,1, 3, nil], c
+      T :circle, c, [6,1, 3, nil]
     end
   end
 
-  def test_12
+  D "given diameter :AB" do
     circle(:diameter => :AB).tap do |c|
-      assert_circle [4.5,1, 1.5, nil], c
+      T :circle, c, [4.5,1, 1.5, nil]
     end
   end
 
-  def test_13
+  D "given diameter :BA" do
     circle(:diameter => :BA).tap do |c|
-      assert_circle [4.5,1, 1.5, nil], c
+      T :circle, c, [4.5,1, 1.5, nil]
     end
   end
 
-  def test_14
+  D "given label, centre p(-7,-2), radius :AC" do
     circle(:M, :centre => p(7,-2), :radius => :AC).tap do |c|
-      assert_circle [7,-2, Math.sqrt(17), :M], c
+      T :circle, c, [7,-2, Math.sqrt(17), :M]
     end
   end
 
-  def test_15
+  D "given label, centre p(3,-9), diameter :AC" do
     circle(:X, :centre => p(3,-9), :diameter => :AC).tap do |c|
-      assert_circle [3,-9, Math.sqrt(17)/2, :X], c
-      assert_equal :circle, c.category
-      assert_equal :cir01,  c.id
-      assert_equal :X,      c.label.symbol
+      T :circle, c, [3,-9, Math.sqrt(17)/2, :X]
+      Eq c.category,     :circle
+      Eq c.id,           :cir01
+      Eq c.label.symbol, :X
     end
   end
 
     # This is really a test of Register, but nevermind.
-  def test_16_consecutive_ids
+  D "#id, @register.by_id, Circle[n]" do
     c1 = circle()
     c2 = circle(:centre => p(5,6), :radius => 7)
-    assert_equal :cir01,  c1.id
-    assert_equal :cir02,  c2.id
-    assert_equal c1, @register.by_id(:cir01)
-    assert_equal c2, @register.by_id(:cir02)
-    assert_equal c1, Circle[0]
-    assert_equal c2, Circle[1]
-    assert_equal c2, Circle[-1]
+    Eq c1.id, :cir01
+    Eq c2.id, :cir02
+    Eq @register.by_id(:cir01), c1
+    Eq @register.by_id(:cir02), c2
+    Eq Circle[0],  c1
+    Eq Circle[1],  c2
+    Eq Circle[-1], c2
   end
 
-  alias ar assert_raise
   SE = RGeom::Err::SpecificationError
-  def test_17_invalid_specs
-    ar(SE) { circle(:centre => :F) }
-    ar(SE) { circle(:radius => :DF) }
-    ar(SE) { circle(:radius => :DFG) }
-    ar(SE) { circle(:radius => 4, :diameter => 7) }
-    ar(SE) { circle(:centre => "centre") }
-    ar(SE) { circle(:centre => :AB) }
+  D "invalid specifications --> error" do
+    E(SE) { circle(:centre => :F) }
+    E(SE) { circle(:radius => :DF) }
+    E(SE) { circle(:radius => :DFG) }
+    E(SE) { circle(:radius => 4, :diameter => 7) }
+    E(SE) { circle(:centre => "centre") }
+    E(SE) { circle(:centre => :AB) }
   end
 
-end  # TestCircle
+end  # "Circle"

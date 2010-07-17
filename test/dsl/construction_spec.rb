@@ -1,45 +1,50 @@
-require 'test/unit'
-require 'rgeom'
-include RGeom::Assertions
-include RGeom
+# The code tested here is internal RGeom code, not part of the public API.
 
-  # Test some complex parameter matching.
-class TestConstructionSpec < Test::Unit::TestCase
-
-  def setup
+D "DSL -> Construction spec" do
+  D.< do
     @register = RGeom::Register.instance
     @register.clear!
     points :A => p(3,1), :B => p(6,1), :C => p(7,2)
   end
 
-  def test_01_thorough
-    spec = ConstructionSpec.new({:base => 5, :angle => 13})
-    spec.parameters      = [:base, :angle]
-    spec.fixed_parameter = :type
-    spec.fixed_argument  = :isosceles
-    spec.label           = :JKL
+  D "thorough test of ConstructionSpec object" do
+    D.< do
+      @spec = ConstructionSpec.new({:base => 5, :angle => 13})
+      @spec.parameters      = [:base, :angle]
+      @spec.fixed_parameter = :type
+      @spec.fixed_argument  = :isosceles
+      @spec.label           = :JKL
+    end
 
-    assert_equal :JKL,            spec.label
-    assert_equal :isosceles,      spec.type
-    assert_equal [:base, :angle], spec.parameters
-    assert_equal 5,    spec.base
-    assert_equal 13,   spec.angle
-    assert_equal nil,  spec.height
-    assert_equal nil,  spec.fajsdfafsdajsdkalfh
-  end
+    D "basic properties (label, parameters)" do
+      Eq @spec.label, :JKL
+      Eq @spec.parameters, [:base, :angle]
+    end
 
-  def test_02_sans
+    D "fixed_parameter and fixed_argument combine correctly" do
+      Eq @spec.type, :isosceles
+    end
+
+    D "dynamic properties (like OpenStruct)" do
+      Eq @spec.base, 5
+      Eq @spec.angle, 13
+      Eq @spec.height, nil
+      Eq @spec.fajsdfafsdajsdkalfh, nil
+    end
+  end  # "thorough test of ConstructionSpec object"
+
+  D "'sans' method" do
     arc_spec = ConstructionSpec.new({:centre => :A, :radius => 5, :angles => [45, 100]})
     arc_spec.parameters = [:centre, :radius, :angles]
     arc_spec.label      = :K
+
     circle_spec = arc_spec.sans(:angles)
-    assert_equal [:centre, :radius], circle_spec.parameters
-    assert_equal :K,                 circle_spec.label
-    assert_equal :A,                 circle_spec.centre
-    assert_equal 5,                  circle_spec.radius
-    assert_equal nil,                circle_spec.angles
+
+    Eq circle_spec.parameters, [:centre, :radius]
+    Eq circle_spec.label,      :K
+    Eq circle_spec.centre,     :A
+    Eq circle_spec.radius,     5
+    Eq circle_spec.angles,     nil
   end
 
-end  # class TestConstructionSpec
-
-
+end  # "DSL -> Construction spec"

@@ -1,107 +1,101 @@
-require 'test/unit'
-require 'rgeom'
-include RGeom::Assertions
-include RGeom
+D "Square" do
 
-class TestSquare < Test::Unit::TestCase
-
-  def setup
+  D.< do
     @register = RGeom::Register.instance
     @register.clear!
     points :A => p(3,1), :B => p(7,-2)
   end
 
-  def test_1_default_square
+  D "default (with labels)" do
     square(:MNOP).tap do |s|
-      assert_square s, %w(0 0   5 0   5 5   0 5)
-      assert_point p(0,0), @register[:M]
-      assert_point p(5,0), @register[:N]
-      assert_point p(5,5), @register[:O]
-      assert_point p(0,5), @register[:P]
-      assert_equal 5, s.side
+      T :square, s, %w(0 0   5 0   5 5   0 5)
+      Eq @register[:M], p(0,0)
+      Eq @register[:N], p(5,0)
+      Eq @register[:O], p(5,5)
+      Eq @register[:P], p(0,5)
+      Eq s.side, 5
     end
   end
 
-  def test_2a_default_square_off_origin
+  D "default (sans labels)" do
+    square().tap do |s|
+      T :square, s, %w(0 0   5 0   5 5   0 5)
+    end
+  end
+
+  D "given one vertex" do
     square(:A___).tap do |s|
-      assert_square s, %w(3 1   8 1   8 6   3 6)
-      assert_point p(3,1), @register[:A]   # Sanity check.
-      assert_equal 5, s.side
+      T :square, s, %w(3 1   8 1   8 6   3 6)
+      Eq @register[:A], p(3,1)
+      Eq s.side, 5
     end
   end
 
-  def test_2b_default_square_off_origin_with_given_side
+  D "given one vertex and side length" do
     square(:A___, :side => 1.5).tap do |s|
-      assert_square s, %w(3 1   4.5 1   4.5 2.5   3 2.5)
-      assert_equal 1.5, s.side
+      T :square, s, %w(3 1   4.5 1   4.5 2.5   3 2.5)
+      Eq s.side, 1.5
     end
   end
 
-  def test_3a_angled_square_A_and_B_defined
+  D "given two vertices" do
     square(:AB__).tap do |s|
-      assert_square s, %w(3 1   7 -2   10 2   6 5)
-      assert_equal 5, s.side
+      T :square, s, %w(3 1   7 -2   10 2   6 5)
+      Eq s.side, 5
     end
   end
 
-  def test_3b_angled_square_A_and_B_defined
+  D "given base segment I" do
     square(:base => :AB).tap do |s|
-      assert_square s, %w(3 1   7 -2   10 2   6 5)
-      assert_equal 5, s.side
+      T :square, s, %w(3 1   7 -2   10 2   6 5)
+      Eq s.side, 5
     end
   end
 
-  def test_3c_angled_square_A_and_B_defined
+  D "given base segment II" do
     square(:base => _segment(:AB)).tap do |s|
-      assert_square s, %w(3 1   7 -2   10 2   6 5)
-      assert_equal 5, s.side
+      T :square, s, %w(3 1   7 -2   10 2   6 5)
+      Eq s.side, 5
     end
   end
 
-  def test_4a_angled_square_other_way_around
+  D "given two vertices (and labels for the other two)" do
     square(:BARF).tap do |s|
-      assert_square s, %w(7 -2   3 1   0 -3   4 -6)
-      assert_equal 5, s.side
-      assert_point p(0,-3), @register[:R]
-      assert_point p(4,-6), @register[:F]
+      T :square, s, %w(7 -2   3 1   0 -3   4 -6)
+      Eq s.side, 5
+      Eq @register[:R], p(0,-3)
+      Eq @register[:F], p(4,-6)
     end
   end
 
-  def test_4b_angled_square_other_way_around
+  D "given base segment III" do
     square(:base => :BA).tap do |s|
-      assert_square s, %w(7 -2   3 1   0 -3   4 -6)
-      assert_equal 5, s.side
+      T :square, s, %w(7 -2   3 1   0 -3   4 -6)
+      Eq s.side, 5
     end
   end
 
-  def test_4c_angled_square_other_way_around
+  D "given base segment IV" do
     square(:base => _segment(:BA)).tap do |s|
-      assert_square s, %w(7 -2   3 1   0 -3   4 -6)
-      assert_equal 5, s.side
+      T :square, s, %w(7 -2   3 1   0 -3   4 -6)
+      Eq s.side, 5
     end
   end
 
-  def test_5a_diagonal
+  D "given diagonal I" do
     diagonal = Segment.simple( Point[-6,-2], Point[3,3] )
     square(:diagonal => diagonal).tap do |s|
-      assert_square s, %w(-6 -2   1 -4   3 3   -4 5)
-      assert_close  7.28011, s.side
+      T :square, s, %w(-6 -2   1 -4   3 3   -4 5)
+      Ft s.side, 7.28011
     end
   end
 
-  def test_5b_diagonal_other_way_around
+  D "given diagonal II" do
     diagonal = Segment.simple( Point[3,3], Point[-6,-2] )
     square(:diagonal => diagonal).tap do |s|
-      assert_square s, %w(3 3   -4 5   -6 -2   1 -4)
-      assert_close  7.28011, s.side
+      T :square, s, %w(3 3   -4 5   -6 -2   1 -4)
+      Ft s.side, 7.28011
     end
   end
 
-  def test_6_no_label_no_arguments_nothing
-    square().tap do |s|
-      debug s
-      assert_square s, %w(0 0   5 0   5 5   0 5)
-    end
-  end
-
-end  # TestSquare
+end  # "Square"

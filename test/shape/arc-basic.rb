@@ -1,145 +1,139 @@
-require 'test/unit'
-require 'rgeom'
-include RGeom::Assertions
-include RGeom
 
   # TestArcBasic is adapted test-for-test from TestCircle, because of the similarity
   # of the two classes (Arc defers to Circle for much of its implementation).
   # See TestArc for more thorough testing of arc-specific features.
-class TestArcBasic < Test::Unit::TestCase
+D "Arc (basic)" do
 
-  def setup
+  D.< do
     @register = RGeom::Register.instance
     @register.clear!
     points :A => p(3,1), :B => p(6,1), :C => p(7,2)
-    #debug $test_unit_current_test
   end
 
-  def test_01
+  D "default -- centre p(0,0), radius 1 -- angles [5,7]" do
     arc(:angles => [5,7]).tap do |a|
-      assert_arc   [0,0, 1, nil, 5,7], a
-      assert_equal :arc,    a.category
-      assert_equal :arc01,  a.id
-      assert_equal nil,     a.label
+      T :arc, a, [0,0, 1, nil, 5,7]
+      Eq a.category, :arc
+      Eq a.id,       :arc01
+      Eq a.label,    nil
     end
   end
 
-  def test_02
+  D "given label, centre p(5,2), angles [5,7]" do
     arc(:G, :centre => p(5,2), :angles => [5,7]).tap do |a|
-      assert_arc   [5,2, 1, :G, 5,7], a
-      assert_equal :arc,    a.category
-      assert_equal :arc01,  a.id
-      assert_equal :G,      a.label.symbol
+      T :arc, a, [5,2, 1, :G, 5,7]
+      Eq a.category,     :arc
+      Eq a.id,           :arc01
+      Eq a.label.symbol, :G
     end
   end
 
-  def test_03
+  D "given label, centre p(5,2), radius 3, angles [5,7]" do
     arc(:G, :centre => p(5,2), :radius => 3, :angles => [5,7]).tap do |a|
-      assert_arc   [5,2, 3, :G, 5,7], a
+      T :arc, a, [5,2, 3, :G, 5,7]
     end
   end
 
-  def test_04
+  D "given label, radius 9, angles [5,7]" do
     arc(:G, :radius => 9, :angles => [5,7]).tap do |a|
-      assert_arc   [0,0, 9, :G, 5,7], a
+      T :arc, a, [0,0, 9, :G, 5,7]
     end
   end
 
-  def test_05
+  D "given centre :A, angles [5,7]" do
     arc(:centre => :A, :angles => [5,7]).tap do |a|
-      assert_arc   [3,1, 1, nil, 5,7], a
+      T :arc, a, [3,1, 1, nil, 5,7]
     end
   end
 
-  def test_06
+  D "given centre :A, radius 4, angles [5,7]" do
     arc(:centre => :A, :radius => 4, :angles => [5,7]).tap do |a|
-      assert_arc   [3,1, 4, nil, 5,7], a
+      T :arc, a, [3,1, 4, nil, 5,7]
     end
   end
 
-  def test_07
+  D "given centre :A, diameter 4, angles [5,7]" do
     arc(:centre => :A, :diameter => 4, :angles => [5,7]).tap do |a|
-      assert_arc   [3,1, 2, nil, 5,7], a
+      T :arc, a, [3,1, 2, nil, 5,7]
     end
   end
 
-  def test_08
+  D "given centre :A, radius :BC, angles [5,7]" do
     arc(:centre => :A, :radius => :BC, :angles => [5,7]).tap do |a|
-      assert_arc   [3,1, Math.sqrt(2), nil, 5,7], a
+      T :arc, a, [3,1, Math.sqrt(2), nil, 5,7]
     end
   end
 
-  def test_09
+  D "given centre :A, diameter :BC, angles [5,7]" do
     arc(:centre => :A, :diameter => :BC, :angles => [5,7]).tap do |a|
-      assert_arc   [3,1, Math.sqrt(2)/2, nil, 5,7], a
+      T :arc, a, [3,1, Math.sqrt(2)/2, nil, 5,7]
       # Gotta test these methods once!
-      assert_equal nil, a.centroid
-      assert_equal [p(3,1)], a.points   # An arc's only 'point' is its centre.
+      Eq a.centroid, nil
+      Eq a.points, [p(3,1)]    # An arc's only 'point' is its centre.
     end
   end
 
-  def test_10
+  D "given radius :AB, angles [5,7]" do
     arc(:radius => :AB, :angles => [5,7]).tap do |a|
-      assert_arc   [3,1, 3, nil, 5,7], a
+      T :arc, a, [3,1, 3, nil, 5,7]
     end
   end
 
-  def test_11
+  D "given radius :BA, angles [5,7]" do
     arc(:radius => :BA, :angles => [5,7]).tap do |a|
-      assert_arc   [6,1, 3, nil, 5,7], a
+      T :arc, a, [6,1, 3, nil, 5,7]
     end
   end
 
-  def test_12
+  D "given diameter :AB, angles [5,7]" do
     arc(:diameter => :AB, :angles => [5,7]).tap do |a|
-      assert_arc   [4.5,1, 1.5, nil, 5,7], a
+      T :arc, a, [4.5,1, 1.5, nil, 5,7]
     end
   end
 
-  def test_13
+  D "given diameter :BA, angles [5,7]" do
     arc(:diameter => :BA, :angles => [5,7]).tap do |a|
-      assert_arc   [4.5,1, 1.5, nil, 5,7], a
+      T :arc, a, [4.5,1, 1.5, nil, 5,7]
     end
   end
 
-  def test_14
+  D "given label, centre p(-7,-2), radius :AC, angles [5,7]" do
     arc(:M, :centre => p(7,-2), :radius => :AC, :angles => [5,7]).tap do |a|
-      assert_arc   [7,-2, Math.sqrt(17), :M, 5,7], a
+      T :arc, a, [7,-2, Math.sqrt(17), :M, 5,7]
     end
   end
 
-  def test_15
+  D "given label, centre p(3,-9), diameter :AC, angles [5,7]" do
     arc(:X, :centre => p(3,-9), :diameter => :AC, :angles => [5,7]).tap do |a|
-      assert_arc   [3,-9, Math.sqrt(17)/2, :X, 5,7], a
-      assert_equal :arc,    a.category
-      assert_equal :arc01,  a.id
-      assert_equal :X,      a.label.symbol
+      T :arc, a, [3,-9, Math.sqrt(17)/2, :X, 5,7]
+      Eq a.category,     :arc
+      Eq a.id,           :arc01
+      Eq a.label.symbol, :X
     end
   end
 
     # This is really a test of Register, but nevermind.
-  def test_16_consecutive_ids
+  D "#id, @register.by_id, Circle[n], angles [5,7]" do
     a1 = arc(:angles => [5,7])
     a2 = arc(:centre => p(5,6), :radius => 7, :angles => [5,7])
-    assert_equal :arc01,  a1.id
-    assert_equal :arc02,  a2.id
-    assert_equal a1, @register.by_id(:arc01)
-    assert_equal a2, @register.by_id(:arc02)
-    assert_equal a1, Arc[0]
-    assert_equal a2, Arc[1]
-    assert_equal a2, Arc[-1]
+    Eq a1.id, :arc01
+    Eq a2.id, :arc02
+    Eq @register.by_id(:arc01), a1
+    Eq @register.by_id(:arc02), a2
+    Eq Arc[0],  a1
+    Eq Arc[1],  a2
+    Eq Arc[-1], a2
   end
 
-  alias ar assert_raise
   SE = RGeom::Err::SpecificationError
-  def test_17_invalid_specs
-    ar(SE) { arc(:centre => :F, :angles => [40,50]) }
-    ar(SE) { arc(:radius => :DF, :angles => [40,50]) }
-    ar(SE) { arc(:radius => :DFG, :angles => [40,50]) }
-    ar(SE) { arc(:radius => 4, :diameter => 7, :angles => [40,50]) }
-    ar(SE) { arc(:centre => "centre", :angles => [40,50]) }
-    ar(SE) { arc(:centre => :AB, :angles => [40,50]) }
-    ar(SE) { arc(:centre => p(5,2), :radius => 7) }
+  D "invalid specifications --> error" do
+    E(SE) { arc(:centre => :F, :angles => [40,50]) }
+    E(SE) { arc(:radius => :DF, :angles => [40,50]) }
+    E(SE) { arc(:radius => :DFG, :angles => [40,50]) }
+    E(SE) { arc(:radius => 4, :diameter => 7, :angles => [40,50]) }
+    E(SE) { arc(:centre => "centre", :angles => [40,50]) }
+    E(SE) { arc(:centre => :AB, :angles => [40,50]) }
+    E(SE) { arc(:centre => p(5,2), :radius => 7) }
   end
 
 end  # TestArc

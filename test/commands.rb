@@ -1,59 +1,66 @@
-require 'test/unit'
-require 'rgeom'
-
-include RGeom
-include RGeom::Assertions
-
-class TestCommands < Test::Unit::TestCase
-  def setup
+D "Commands - p, pt, s, seg" do
+  D.< {
     @register = RGeom::Register.instance
     @register.clear!
     points :G => [-3,0.5], :H => [0,1]
-  end
+  }
 
-  def test_points_1
-    assert_kind_of Point, pt(5,5)
-    assert_kind_of Point, p(5,5)
-    assert_equal   9,     pt(9,4).x
-    assert_equal   4,     pt(9,4).y
-  end
+  D "Points" do
+    D "p(5,5)" do
+      Ko pt(5,5),   Point
+      Ko p(5,5),    Point
+      Eq pt(9,4).x, 9
+      Eq pt(9,4).y, 4
+    end
 
-  def test_points_2
-    assert_kind_of Point, pt(:G)
-    assert_kind_of Point, p(:G)
-    assert_equal   -3,    pt(:G).x
-    assert_equal   0.5,   p(:G).y
-  end
+    D "p(:G)" do
+      Ko pt(:G), Point
+      Ko p(:G),  Point
+      Eq pt(:G).x, -3
+      Eq p(:G).y,  0.5
+    end
 
-  def test_points_3
-    p1 = Point[5,2]
-    assert_kind_of Point, pt(p1)
-    assert_kind_of Point, p(p1)
-    assert_equal   5,     pt(p1).x
-    assert_equal   2,     pt(p1).y
-  end
+    D "p(point)" do
+      p1 = Point[5,2]
+      Ko pt(p1), Point
+      Ko p(p1),  Point
+      Eq pt(p1).x, 5
+      Eq p(p1).y,  2
+    end
 
-  def test_points_4
-    assert_equal nil, p(nil)
-  end
+    D "p(nil)" do
+      N p(nil)
+      N pt(nil)
+    end
+  end  # Points
 
-  def test_segments
-    assert_kind_of Segment, seg(:GH)
-    assert_kind_of Segment, s(:GH)
-    assert_point   p(:G),   seg(:GH).p
-    assert_point   p(:H),   seg(:GH).q
-    assert_kind_of Segment, seg( p(4,2), p(7,-1) )
-    assert_kind_of Segment, s( p(4,2), p(7,-1) )
-    assert_point   p(4,2),  seg( p(4,2), p(7,-1) ).p
-    assert_point   p(7,-1), seg( p(4,2), p(7,-1) ).q
-    assert_equal   nil,     seg(nil)
-    assert_equal   nil,     s(nil)
-    assert_kind_of Segment, seg( seg(:GH) )
-    assert_kind_of Segment, s( seg(:GH) )
-    assert_point   p(:G),   seg( seg(:GH) ).p
-    assert_point   p(:H),   seg( seg(:GH) ).q
-    assert_point   p(:G),   seg( seg( seg( seg(:GH) ) ) ).p
-    assert_point   p(:H),   seg( seg( seg( seg(:GH) ) ) ).q
-  end
-
-end  # class TestCommands
+  D "Segments" do
+    D "s(:GH) and seg(:GH) create a segment" do
+      Ko seg(:GH), Segment
+      Ko   s(:GH), Segment
+    end
+    D "p and q return the start and end points of the segment" do
+      Eq seg(:GH).p, p(:G)
+      Eq   s(:GH).q, p(:H)
+    end
+    D "s() and seg() can take points as arguments" do
+      Ko seg( p(4,2), p(7,1) ),    Segment
+      Ko   s( p(4,2), p(7,1) ),    Segment
+      Eq seg( p(4,2), p(7,1) ).p,  p(4,2)
+      Eq   s( p(4,2), p(7,1) ).q,  p(7,1)
+    end
+    D "s(nil)" do
+      N seg(nil)
+      N   s(nil)
+    end
+    D "s() and seg() can take a segment as an argument" do
+      Ko s( seg(:GH) ),    Segment
+      Ko seg( s(:GH) ),    Segment
+      Ko seg( seg(:GH) ),  Segment
+      Ko s( s(:GH) ),      Segment
+      Eq s( s(:GH) ).p,                p(:G)
+      Eq s( s( s(:GH))).p,             p(:G)
+      Eq s( s( s( s( s( s(:GH)))))).q, p(:H)
+    end
+  end  # Segments
+end
