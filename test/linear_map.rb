@@ -1,16 +1,6 @@
 
 LinearMap = RGeom::Diagram::Canvas::LinearMap
 
-Attest.custom :linearmap, {
-  :description => "Linear map correctness",
-  :parameters  => [ [:map, LinearMap], [:values, Hash] ],
-  :run => lambda {
-    values.each_pair do |x, x_|
-      test("#{x} -> #{x_}") { Ft map.map(x), x_ }
-    end
-  }
-}
-
 D "LinearMap" do
 
   ### def T :linearmap,(map, values={})

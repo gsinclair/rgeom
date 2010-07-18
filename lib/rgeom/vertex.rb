@@ -205,7 +205,7 @@ module RGeom
       if @label
         return @label
       else
-        label = vertex_names.to_s
+        label = vertex_names.join
         if label == ""
           :___   # Think about making it the appropriate length, or even
         else     # ensuring the vertices are called :_ if they're not called anything else.

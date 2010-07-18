@@ -326,7 +326,9 @@ module RGeom; module DSL;
   #
   class ConstructionSpec
 
-    undef :type   # Reserve this method name for our use.
+    if RUBY_VERSION =~ /^1.8/
+      undef :type   # Reserve this method name for our use.
+    end
     attr_accessor :label, :parameters
 
     def initialize(hash)

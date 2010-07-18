@@ -1,5 +1,5 @@
 
-require 'cairo' unless PLATFORM == "i386-cygwin"
+require 'cairo' unless RUBY_PLATFORM == "i386-cygwin"
 
 #
 # RGeom diagrams.

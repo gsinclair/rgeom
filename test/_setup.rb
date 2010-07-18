@@ -81,3 +81,16 @@ Attest.custom :point, {
     test('y') { Ft point1.y, point2.y }
   }
 }
+
+LinearMap = RGeom::Diagram::Canvas::LinearMap
+
+Attest.custom :linearmap, {
+  :description => "Linear map correctness",
+  :parameters  => [ [:map, LinearMap], [:values, Hash] ],
+  :run => proc {
+    values.each_pair do |x, x_|
+      test("#{x} -> #{x_}") { Ft map.map(x), x_ }
+    end
+  }
+}
+

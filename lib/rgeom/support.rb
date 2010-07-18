@@ -52,7 +52,11 @@ module RGeom
     end
     
     class ::OpenStruct
-      undef :type  # We need to use 'type' as an attribute; this clashes.
+      if RUBY_VERSION =~ /^1.8/
+        undef :type  # We need to use 'type' as an attribute; this clashes.
+      else
+        # doesn't matter -- Object#type isn't defined in 1.9
+      end
     end
 
     class ::Numeric
