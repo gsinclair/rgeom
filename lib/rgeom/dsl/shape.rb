@@ -474,10 +474,19 @@ module RGeom; module DSL;
       # extract one, we ensure it's valid before continuing.
 
       unless args.empty?
-        label = _extract_label(args) #Label[args.shift]
-        unless label.nil? or label_valid_for_this_shape?(label)
-          Err.invalid_label_specified(@shape_name, label)
-        end
+        label = _extract_label(args)
+        ### unless label.nil? or label_valid_for_this_shape?(label)
+        ###   Err.invalid_label_specified(@shape_name, label)
+        ### end
+        #
+        # We don't really have cause to call invalid_label_specified because we
+        # treat an invalid label as a potential fixed argument.
+        #
+        # TODO: revisit this whole method to see if there's a better way to
+        # process the arguments.  I mean, the arguments are either plain
+        # arguments or a hash with options and stuff.  Surely there must be at
+        # most two plain arguments and the label, if it is provided, must come
+        # first.
       end
 
       # After a label, there may be a fixed argument.  It will be the only thing
@@ -503,12 +512,17 @@ module RGeom; module DSL;
     end
 
       # Looks for, removes, and returns a label from the given array.
-      # We do _not_ check to see that the label is valid for this shape; that's
-      # the responsibility of the caller of this method.
+      # We _only_ extract a label that is valid for this shape.  Otherwise code
+      # like this will not work --  { triangle(:equilateral, :base => 5) } --
+      # where no label is present but a bare keyword argument is.  We do not
+      # want :equilateral to be interpreted as a label.
+      #
+      # TODO: in what circumstances should we need to look beyond the first
+      # argument?
     def _extract_label(args)
       index = catch(:found) {
         args.each_with_index do |arg, idx|
-          if l = Label[arg]
+          if l = Label[arg] and label_valid_for_this_shape?(l)
             throw :found, idx
           end
         end

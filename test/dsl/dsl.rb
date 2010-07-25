@@ -58,6 +58,7 @@ D "DSL (using circles as a means of testing the DSL)" do
 
     D "invalid label leads to error" do
       E(RGeom::Err::SpecificationError) do
+        # :XYZ is invalid for a circle label
         spec = @prop.generate_construction_spec([:XYZ, {:diameter => :AB}])
       end
       Mt Attest.exception.message, /invalid.*label/i

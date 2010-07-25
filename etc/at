@@ -3,4 +3,4 @@
 attest=../attest
 col=../col
 
-ruby -rubygems -I${col}/lib -I${attest}/lib ${attest}/bin/attest $*
+ruby -rubygems ${attest}/bin/attest $*

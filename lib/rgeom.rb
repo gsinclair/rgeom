@@ -12,6 +12,8 @@
 
 # *----------------* General-purpose includes *----------------*
 
+require 'debuglog'
+
 time('rgeom -- external requires') {
 require 'rubygems'
 require 'yaml'
@@ -20,6 +22,7 @@ require 'fattr'    # Ara Howard's souped-up attributes
 require 'singleton'
 require 'term/ansicolor'
 require 'facets/dictionary'
+require 'facets/string/tabto'
 require 'ostruct'
 require 'ruby-debug'
 gem 'awesome_print'
