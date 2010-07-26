@@ -83,12 +83,7 @@ module RGeom
   module Commands; end           # pt(), seg(), render(), etc.
   require 'rgeom/commands'       # For inclusion in top-level.
 
-  # The following code is commented out because of conflict between Attest and Test::Unit.
-  unless defined? Attest
-    module Assertions; end         # For testing.
-    require 'rgeom/assertions'
-  end
-end
+end  # module RGeom
 }  # time()
 
 

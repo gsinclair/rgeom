@@ -1,5 +1,7 @@
 
 require 'rgeom'
+require 'debuglog'
+require 'ruby-debug'
 
 # Usage:
 #   T :circle, c, [5,2, 3, :H]

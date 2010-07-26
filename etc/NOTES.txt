@@ -1,0 +1,18 @@
+* SEGMENT AND ANGLE MARKS
+
+To construct triangles, squares, etc. I've used the excellent idea of creating
+a _unit_ isosceles triangle (for instance) then scaling it to the required
+position, size and angle.
+
+I just realised that that approach will almost certainly work for segment marks
+and angle marks as well!  Say you want to put a single segment marker on the
+segment AB.  Well, pretend AB runs from the (0,0) to (1,0), put in segment marks
+of the appropriate height and distance apart, and then scale them to the real
+AB.
+
+Angle marks should work the same.  Some preliminary work on transforming arcs
+would be worthwhile.
+
+Alternatively, if the length of AB is 'd', then start with the imaginary segment
+(0,0) to (d,0) and place marks of a standard height and lateral separation, and
+scale _that_.  It doesn't need to be of unit length; just nice and flat.

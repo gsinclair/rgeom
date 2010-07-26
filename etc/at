@@ -2,5 +2,6 @@
 
 attest=../attest
 col=../col
+debuglog=../debuglog
 
-ruby -rubygems ${attest}/bin/attest $*
+ruby -rubygems -I${debuglog}/lib ${attest}/bin/attest $*

@@ -76,6 +76,16 @@ shape :semicircle, :label => :K,
     radius: segment
   }
 
+  # We don't know how many vertices a polygon has.
+  # Perhaps we'll have to implement Shape.valid_label?(label).
+  # (That would give us Triangle.valid_label?, Polygon.valid_label? etc.)
+shape :polygon, :label => :_,
+  :declaration => "base: (segment,n=nil)",
+  :parameters => %{
+    n: number, (base), start: point=nil
+    n: number, centre: point=origin, radius: length
+  }
+
 shape :segment, :label => :AB,
   :parameters => %{
     -
