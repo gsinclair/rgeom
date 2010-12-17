@@ -21,7 +21,7 @@ require 'pp'
 require 'fattr'    # Ara Howard's souped-up attributes
 require 'singleton'
 require 'term/ansicolor'
-require 'facets/dictionary'
+require 'dictionary'
 require 'facets/string/tabto'
 require 'ostruct'
 require 'ruby-debug'

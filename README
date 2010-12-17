@@ -109,12 +109,14 @@ DEPENDENCIES
   All dependencies can be installed via Rubygems.
 
   In RGeom itself:
-   * extensions
    * fattr
    * term-ansicolor
    * facets
+   * dictionary
+   * treetop
+   * awesome_print    [debugging code only]
    * ruby-debug       [debugging code only]
-   * dev-utils        [debugging code only]
+   * debuglog         [debugging code only]
 
   To generate the HTML examples (in addition to the above):
    * rio

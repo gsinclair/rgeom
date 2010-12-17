@@ -1,5 +1,5 @@
 
-require 'facets/dictionary'
+require 'dictionary'
 
 module RGeom
   class Style
