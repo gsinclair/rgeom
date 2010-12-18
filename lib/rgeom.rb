@@ -7,28 +7,36 @@
 #   render('triangle.png')
 #
 # See http://rgeom.rubyforge.org for more examples, including code and images.
+#
+# RGeom is 1.9.2+ only; the existence of RubyGems is assumed.
+# (Also uses Bundler, which must be installed separately.)
 
 
 
 # *----------------* General-purpose includes *----------------*
 
+require "bundler/setup"
+Bundler.setup(:development)
+Bundler.setup(:runtime)
+
 require 'debuglog'
 
 time('rgeom -- external requires') {
-require 'rubygems'
-require 'yaml'
-require 'pp'
-require 'fattr'    # Ara Howard's souped-up attributes
-require 'singleton'
-require 'term/ansicolor'
-require 'dictionary'
-require 'facets/string/tabto'
-require 'ostruct'
-require 'ruby-debug'
-gem 'awesome_print'
-require 'ap'
+  Bundler.require(:development)
+  Bundler.require(:runtime)
+  require 'yaml'
+  require 'pp'
+  require 'singleton'
+  require 'ostruct'
+  # require 'fattr'    # Ara Howard's souped-up attributes
+  # require 'term/ansicolor'
+  # require 'dictionary'
+  # require 'facets/string/tabto'
+  # require 'ruby-debug'
+  # require 'ap'
 }
 class String; include Term::ANSIColor; end
+  # TODO: ^^^ needed?  I use Col now, don't I?  Not yet?
 
 
 

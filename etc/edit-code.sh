@@ -1,1 +1,1 @@
-gvim.bat `find lib -type f`
+gvim `find lib -type f`

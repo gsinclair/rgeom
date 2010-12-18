@@ -20,6 +20,8 @@ DESCRIPTION
   beautiful vector diagrams in LaTeX documents with a certain degree of
   effort, but I want to produce images for use in Microsoft Word, easily.
 
+  RGeom is targeted at 1.9.2+ and uses Bundler for managing dependencies.
+
 
 AUDIENCE
 
