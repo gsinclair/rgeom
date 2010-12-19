@@ -41,9 +41,9 @@ module RGeom; module DSL;
   #     }
   #
   # This creates a top-level 'circle' method and a Circle class (to be precise,
-  # <tt>RGeom::Shape::Circle</tt>).  Whoever is implementing circles needs to
-  # write the method Circle#construct(data), where 'data' is a simple data
-  # object containing the arguments that the user provided.
+  # <tt>RGeom::Shapes::Circle</tt>).  Whoever is implementing circles needs to
+  # write the method Circle.construct(spec), where 'spec' is a ConstructionSpec
+  # object (see below) containing the arguments that the user provided.
   #
   # The 'circle' method is called with keyword arguments.  Here are some valid
   # examples:
@@ -70,23 +70,6 @@ module RGeom; module DSL;
   #
   # It matches the first spec and the third (with default centre).  The first
   # spec is the one we would want it to match; that's why it is listed first.
-  #
-  # You can *extend* shapes (i.e. inherit their parameters) like so:
-  #
-  #   shape :arc, :extends => :circle,
-  #     :parameters => %{
-  #       angles: [n,n]
-  #     }
-  #
-  # TODO: support extensions; support the kind of conditional-parameter
-  #       declarations needed by Triangle.
-  #
-  #       The alternative for Triangle is to have different classes behind the
-  #       scenes (EquilateralTriangle, IsoscelesTrianlge, ...) and write a
-  #       custom 'triangle' method that interfaces to all of them.  It's not
-  #       nice, but neither is implementing the features in 'shape' that
-  #       Triangle requires!  It's hard to imagine another shape being as
-  #       complicated.
   #
   def shape(name, args={})
     # Assume name is :circle.
@@ -423,7 +406,7 @@ module RGeom; module DSL;
     # == ShapeProperties#generate_construction_spec
     #
     # A very important method: it ensures the arguments given to a command like
-    # 'circle' are valid, and packages them up into a spec (OpenStruct) with
+    # 'circle' are valid, and packages them up into a spec (ConstructionSpec) with
     # appropriate casting so that the <tt>Circle.construct</tt> method can do
     # its things fairly easily.
     #
