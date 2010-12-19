@@ -161,7 +161,7 @@ class RGeom::Shapes::Triangle
         if height
           height.to_f / base
         elsif angle
-          Math.tan(angle) / 2
+          Math.tan(d2r(angle)) / 2
         elsif side
           unit_side = side/base
           Math.sqrt(unit_side * unit_side - 0.25)
@@ -324,7 +324,11 @@ class RGeom::Shapes::Triangle
     end
 
     def d2r(*vals)
-      vals.map { |a| a * Math::PI / 180 }
+      if vals.size == 1
+        vals.first * Math::PI / 180
+      else
+        vals.map { |a| a * Math::PI / 180 }
+      end
     end
 
   end  # class Constructor
