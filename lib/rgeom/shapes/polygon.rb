@@ -107,11 +107,11 @@ module RGeom::Shapes
         theta = 360.0/n
         first_angle =
           if first_point.nil?
-            270.d - theta/2    # This ensures bottom side is horizontal.
+            (270 - theta/2).d    # This ensures bottom side is horizontal.
           else
-            circle.angle_at(first_point) * 180 / Math::PI   # Hack hack hack!
+            circle.angle_at(first_point).deg
           end
-        angles = (0...n).map { |i| first_angle + i*theta }
+        angles = (0...n).map { |i| first_angle + i*theta.d }
         points = angles.map { |x| circle.angle(x) }
       end
 

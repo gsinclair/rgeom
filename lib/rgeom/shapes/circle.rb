@@ -83,7 +83,7 @@ module RGeom::Shapes
       Point.angle(centre, point)
     end
 
-    # Given an angle in radians, return the point on the circumference at that
+    # Given an angle (Angle), return the point on the circumference at that
     # angle.
     def angle(theta)
       Point.polar(radius, theta).translate(centre)

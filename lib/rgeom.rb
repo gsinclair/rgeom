@@ -52,6 +52,8 @@ module RGeom
   require 'rgeom/support'
   include Support        # This modifies some built-in classes.
 
+  require 'rgeom/angle'  # Easier to convert between degrees and radians.
+
   class Row; end         # What the register stores.
   class Register; end    # Keeps track of geometric constructs.
   require 'rgeom/register'

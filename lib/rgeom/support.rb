@@ -12,11 +12,6 @@ module RGeom
 
     class Label; end
 
-    class ::Integer
-        # 35.d means 35 degrees; it's just decoration.
-      def d; self; end
-    end
-
     module ::Kernel
       undef :p   # We use p for creating a point.
     end
@@ -57,13 +52,6 @@ module RGeom
       else
         # doesn't matter -- Object#type isn't defined in 1.9
       end
-    end
-
-    class ::Numeric
-      D2R_MUlTIPLIER = Math::PI / 180.0
-      R2D_MULTIPLIER = 180.0 / Math::PI
-      def in_radians; self * D2R_MUlTIPLIER; end
-      def in_degrees; self * R2D_MULTIPLIER; end
     end
 
     class ::Array

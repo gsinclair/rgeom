@@ -142,9 +142,9 @@ class RGeom::Shapes::Triangle
       when Segment
         [@spec.base.p, @spec.base.length, @spec.base.angle]
       when Numeric
-        [@p, @spec.base, 0]
+        [@p, @spec.base, 0.d]
       when nil
-        [@p, nil, 0]
+        [@p, nil, 0.d]
       else
         error "Invalid type/value for 'base': #{@spec.base.inspect}"
       end
@@ -161,7 +161,7 @@ class RGeom::Shapes::Triangle
         if height
           height.to_f / base
         elsif angle
-          Math.tan(d2r(angle)) / 2
+          Math.tan(angle.rad) / 2
         elsif side
           unit_side = side/base
           Math.sqrt(unit_side * unit_side - 0.25)
@@ -178,7 +178,7 @@ class RGeom::Shapes::Triangle
       apex =
         if angles
           # Given the base angles, we use trigonometry to calculate the apex.
-          alpha, beta = d2r(angles[0], angles[1])
+          alpha, beta = angles[0].rad, angles[1].rad
           x = Math.tan(beta) / (Math.tan(alpha) + Math.tan(beta))
           y = x * Math.tan(alpha)
           [x,y]
@@ -288,18 +288,18 @@ class RGeom::Shapes::Triangle
       # determines the appropriate amounts of scaling, reflection and rotation.
       # It looks at the length and angle of the desired base.
 
-      scale, angle, vector = 1, 0, [0,0]    # Default values: identity transform
+      scale, angle, vector = 1, 0.d, [0,0]    # Default values: identity transform
         # In the following comments, it's assumed the vertices are named A, B and C.
       case @vertices.mask
       when /F../
         # A is undefined, so we ignore others and default everything.
         scale = @base_length  || DEFAULT_BASE
-        angle = @base_angle   || 0
+        angle = @base_angle   || 0.d
         vector = @p           || Point[0,0]
       when /TF./
         # A is defined but B is not.
         scale = @base_length || DEFAULT_BASE
-        angle = 0
+        angle = 0.d
         vector = @p
       when /TTF/
         # A and B are defined, so we use the base length and angle that were calculated
@@ -321,14 +321,6 @@ class RGeom::Shapes::Triangle
 
     def error(message)
       Err.invalid_spec(:triangle, @spec, message)
-    end
-
-    def d2r(*vals)
-      if vals.size == 1
-        vals.first * Math::PI / 180
-      else
-        vals.map { |a| a * Math::PI / 180 }
-      end
     end
 
   end  # class Constructor

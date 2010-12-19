@@ -41,8 +41,11 @@ datatype :segment,
                                and Segment.simple(*o)}
   ]
 
-datatype :number, :alias => [:n,:angle],
+datatype :number, :alias => [:n],
   :match => lambda { |o| o.numeric? and o }
+
+datatype :angle, :alias => [:a],
+  :match => lambda { |o| o.is_a? Angle and o }
 
 datatype :symbol,
   :match => lambda { |o| o.symbol? and o }
@@ -61,10 +64,10 @@ shape :circle, :label => :K,
 
 shape :arc, :label => :K,
   :parameters => %{
-    radius: segment, angles: [n,n]
-    diameter: segment, angles: [n,n]
-    centre: point=origin, radius: length=1, angles: [n,n]
-    centre: point=origin, diameter: length, angles: [n,n]
+    radius: segment, angles: [a,a]
+    diameter: segment, angles: [a,a]
+    centre: point=origin, radius: length=1, angles: [a,a]
+    centre: point=origin, diameter: length, angles: [a,a]
     centre: point, radius: length, from: point, to: point
   }
 
@@ -126,7 +129,7 @@ shape :triangle, :label => :ABC,
     :isosceles => %{
       (base)
       (base), height: length
-      (base), angle: n
+      (base), angle: angle
       (base), side: length
     },
     :equilateral => %{
@@ -135,14 +138,14 @@ shape :triangle, :label => :ABC,
     :scalene => %{
       (base)
       sides: [length,length,length]
-      (base), angles: [n,n]
+      (base), angles: [a,a]
       (base), height: length
     },
     :_ => %{
       (base)
       (base), right_angle: symbol, height: length=nil, slant: symbol=nil
       sides: [length,length,length]
-      (base), angles: [n,n]
+      (base), angles: [a,a]
       (base), height: length
       sas: [length,angle,length]
     }

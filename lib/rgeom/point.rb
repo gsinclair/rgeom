@@ -20,7 +20,7 @@ module RGeom
     end
 
     def Point.polar(r, t)
-      Point[r * Math.cos(t), r * Math.sin(t)]
+      Point[r * Math.cos(t.rad), r * Math.sin(t.rad)]
     end
 
     def Point.distance(a, b)
@@ -66,10 +66,10 @@ module RGeom
       Point.new(k*@x, k*@y)
     end
 
-      # Rotate by th radians anticlockwise about the origin.
+      # Rotate by the given Angle anticlockwise about the origin.
     def rotate(th)
-      x = @x*cos(th) - @y*sin(th)
-      y = @x*sin(th) + @y*cos(th)
+      x = @x*cos(th.rad) - @y*sin(th.rad)
+      y = @x*sin(th.rad) + @y*cos(th.rad)
       Point.new(x,y)
     end
 
@@ -81,9 +81,10 @@ module RGeom
     alias + translate
 
       # Returns the polar values _r_ and _t_ for this point.
+      # _t_ is an Angle, so can be expressed in degrees or radians.
     def polar
       r = sqrt(@x*@x + @y*@y)
-      t = atan2(@y, @x)
+      t = atan2(@y, @x).r
       [r, t]
     end
 
