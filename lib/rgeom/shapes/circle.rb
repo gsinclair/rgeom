@@ -76,6 +76,20 @@ module RGeom::Shapes
     def angle_of_specified_radius_in_degrees
       @angle_of_radius.in_degrees
     end
+
+    # Given a point on the circumference (ostensibly; doesn't matter if it is),
+    # return the angle from the centre.
+    def angle_at(point)
+      Point.angle(centre, point)
+    end
+
+    # Given an angle in radians, return the point on the circumference at that
+    # angle.
+    def angle(theta)
+      Point.polar(radius, theta).translate(centre)
+      # Better would be: centre + r(radius, theta)
+      # 'r' for 'polar'
+    end
   end  # class Circle
 end  # module RGeom::Shapes
 

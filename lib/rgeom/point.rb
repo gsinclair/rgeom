@@ -20,7 +20,7 @@ module RGeom
     end
 
     def Point.polar(r, t)
-      Point[r * cos(t), r * sin(t)]
+      Point[r * Math.cos(t), r * Math.sin(t)]
     end
 
     def Point.distance(a, b)

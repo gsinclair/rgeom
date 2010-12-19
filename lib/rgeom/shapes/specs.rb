@@ -92,7 +92,7 @@ shape :semicircle, :label => :K,
 #   polygon(:CWXYZ, :side => 10) with existing C 
 #   polygon(:CBHI) with existing C and B 
 
-shape :polygon, :label => :_,
+shape :polygon, :label => "3+",
   :parameters => %{
     -
     n: number, side: length

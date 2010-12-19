@@ -21,6 +21,8 @@ module RGeom
   # It might allow me to remove VertexList and simplify client code.
   #
   class Label
+    @@register = RGeom::Register.instance
+
     def initialize(symbol)
       @symbol = symbol
       if @symbol
@@ -32,15 +34,24 @@ module RGeom
         @symbols = []
         @size    = 0
       end
+      @points = @symbols.map { |x| @@register[x] }
       self.freeze
     end
+
     def Label.[](symbol)
       (symbol.nil?) ? nil : Label.new(symbol)
     end
+
     def to_s; @string; end
     def inspect; "Label[#{@symbol.inspect}]"; end
+    
     def nil?; @symbol.nil? end   # Dodgy?
-    attr_reader :symbol, :string, :symbols, :size
+    
+    attr_reader :symbol, :string, :symbols, :size, :points
+
+    def [](n)
+      @symbols[n]
+    end
 
     def ==(obj)
       case obj
@@ -53,7 +64,15 @@ module RGeom
       end
     end
 
-    # TODO Consider adding pointlist functionality to Label.
+    def point(n)
+      @points[n]
+    end
+
+    def mask
+      points.map { |x| x.nil?  ?  'F'  :  'T' }.join
+    end
+
+    # TODO Consider adding more pointlist functionality to Label.
 
   end  # class Label
 end  # module RGeom

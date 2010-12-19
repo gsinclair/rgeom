@@ -60,7 +60,7 @@ module RGeom::Shapes
                               # todo: ^^^ implement
         if circle_params
           circle = _circle(circle_params)
-          n = spec.n || raise "..."
+          n = spec.n || raise("...")
           points = determine_points_from_circle(circle, n)
         else
 
@@ -73,7 +73,7 @@ module RGeom::Shapes
           case spec.parameters
           when []
             # It all depends on the label.
-            n, a, b = determine_first_two_points(label)
+            n, a, b = determine_first_two_points(spec, label)
           when [:n, :side]
             n = spec.n
             a, b = two_points(side: spec.side)
@@ -81,21 +81,21 @@ module RGeom::Shapes
             n = spec.n
             a, b = two_points(base: spec.base)
           when [:side]
-            n, a, b = determine_first_two_points(label, spec.side)
+            n, a, b = determine_first_two_points(spec, label, spec.side)
           end
           circle = construct_circle(a, b, n)
           points = determine_points_from_circle(circle, n, start_at: a)
         end
 
-        sidelength = points[0].distance_to points[1]
-        vertices = VertexList.new(label, points)
+        sidelength = Point.distance( points[0], points[1] )
+        vertices = VertexList.new(n, label, points)
         Polygon.new(n, circle, sidelength, vertices)
       end  # def Constructor.construct
 
       # Given a circle and the number of sides, return the points that define
       # the polygon.  If 'start_at' parameter given, start at that point and
       # work anticlockwise.  Otherwise, ensure bottom base is flat.
-      def determine_points_from_circle(circle, n, args={})
+      def self.determine_points_from_circle(circle, n, args={})
         first_point = args[:start_at]
         theta = 360.0/n
         first_angle =
@@ -110,15 +110,15 @@ module RGeom::Shapes
 
       # Given the first two points of the polygon, construct the circle in which
       # the polygon will be inscribed.
-      def construct_circle(a, b, n)
+      def self.construct_circle(a, b, n)
         # Form an isosceles triangle based on (ab) with the angle determined by
         # the number of sides in the polygon.  The apex of this triangle is the
         # centre of the circle/polygon.
         base_angle = 90.0 * (n-2) / n
-        t = _triangle(:isosceles, base: segment(a,b), angle: base_angle)
+        t = _triangle(:isosceles, base: seg(a,b), angle: base_angle)
         centre = t.apex
-        radius = t.side(2).length
-        _circle(centre, radius)
+        radius = Point.distance(a, centre)
+        _circle(centre: centre, radius: radius)
       end
 
       # Returns two points given a length (in which case it starts at the origin)
@@ -138,14 +138,14 @@ module RGeom::Shapes
       # Returns _n_ and the first two points, based on the label and base vales.
       # It's complicated to determine what info has been provided, because some
       # points may exist already.
-      def self.determine_first_two_points(label, side=nil)
+      def self.determine_first_two_points(spec, label, side=nil)
         # First determine how many sides we have.
-        n = if spec.label.nil?
+        n = if label.nil?
               Err.label_required_for_polygon("...")
-            elsif spec.label.size <= 2
+            elsif label.size <= 2
               Err.insufficient_label_for_polygon("...")
             else
-              spec.label.size rescue Err.label_required("...")
+              label.size rescue Err.label_required("...")
             end
 
         mask = label.mask
@@ -153,15 +153,15 @@ module RGeom::Shapes
           # We either divine the side length from the label or use the default.
           a, b =
             case mask
-            when /^f*$/     # no points defined
+            when /^F*$/     # no points defined
               two_points(side: DEFAULT_SIDE)
-            when /^tf*$/    # only first point defined
+            when /^TF*$/    # only first point defined
               p1 = label.point(0)     # todo: implement this, or similar
               two_points(start: p1, side: DEFAULT_SIDE)
-            when /^ttf*$/   # first two points defined
+            when /^TTF*$/   # first two points defined
               [ label.point(0), label.point(1) ]
             else
-              Err.invalid_spec("...")
+              Err.invalid_spec(:polygon, spec, "mask == #{mask}")
             end
           return n, a, b
         end

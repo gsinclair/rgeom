@@ -61,4 +61,28 @@ D "Triangle construct - various" do
     T :point, t.apex, p(6.23205,-0.13397)
   end
 
+  D "triangle(:isosceles, :base => :KC, :angle => 60.d)" do
+    t = triangle(:isosceles, :base => :KC, :angle => 60.d)
+    T :point, t.apex, p(6.23205,-0.13397)
+  end
+
+  D "as above but Ruby 1.9 style" do
+    t = triangle(:isosceles, base: :KC, angle: 60.d)
+    T :point, t.apex, p(6.23205,-0.13397)
+  end
+
+  D "triangle(:isosceles, :base => [k,c], :angle => 60.d)" do
+    k = @register[:K]
+    c = @register[:C]
+    t = triangle(:isosceles, :base => [k,c], :angle => 60.d)
+    T :point, t.apex, p(6.23205,-0.13397)
+  end
+
+  D "as above but Ruby 1.9 style" do
+    k = @register[:K]
+    c = @register[:C]
+    t = triangle(:isosceles, base: [k,c], angle: 60.d)
+    T :point, t.apex, p(6.23205,-0.13397)
+  end
+
 end  # "Triangle construct - various"

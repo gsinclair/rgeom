@@ -52,12 +52,12 @@ module RGeom
   require 'rgeom/support'
   include Support        # This modifies some built-in classes.
 
-  class Label; end
-  require 'rgeom/label'
-
   class Row; end         # What the register stores.
   class Register; end    # Keeps track of geometric constructs.
   require 'rgeom/register'
+
+  class Label; end
+  require 'rgeom/label'
 
   class Diagram; end     # Keeps track of drawing instructions for later rendering.
   require 'rgeom/diagram'
@@ -87,6 +87,7 @@ module RGeom
   require 'rgeom/shapes/semicircle'
   require 'rgeom/shapes/square'
   require 'rgeom/shapes/triangle'
+  require 'rgeom/shapes/polygon'
 
   module Commands; end           # pt(), seg(), render(), etc.
   require 'rgeom/commands'       # For inclusion in top-level.

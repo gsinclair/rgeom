@@ -72,7 +72,6 @@ module RGeom; module DSL;
   # spec is the one we would want it to match; that's why it is listed first.
   #
   def shape(name, args={})
-    # Assume name is :circle.
     label_size =
       case x = args[:label]
       when Symbol; x.to_s.size
@@ -386,8 +385,7 @@ module RGeom; module DSL;
       @label_validator =
         case label_size
         when Integer; lambda { |label| label.size == label_size }
-        when String # like "3+"
-          Err.not_implemented
+        when /\A(\d+)\+\Z/; lambda { |label| label.size >= $1.to_i }
         when nil;     lambda { |label| label.nil? }
         else
           Err.invalid_value_for_label_size
