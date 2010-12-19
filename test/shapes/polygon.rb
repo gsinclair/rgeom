@@ -6,7 +6,18 @@ D "Polygon" do
     points :A => p(3,1), :B => p(6,1), :C => p(7,2)
   end
 
-  D "polygon(:ABXYZ)" do
+  D "polygon(:LMNOP) -- basic pentagon" do
+    debugger
+    poly = polygon(:LMNOP)
+    poly.tap do |s|
+      T :vertices, s, %w(L 0 0    M 1 0   N 1.30902  0.95106
+                         O 0.5 1.53884    P -0.30902 0.95106)
+      T :point, p(0.5,1.53884), s.pt(3)
+      T :point, p(0.5,1.53884), @register[:O]
+    end
+  end
+
+  D "polygon(:ABXYZ) -- A and B defined" do
     polygon(:ABXYZ).tap do |s|
       T :vertices, s, %w(A 0 0    B 1 0   X 1.30902  0.95106
                          Y 0.5 1.53884    Z -0.30902 0.95106)

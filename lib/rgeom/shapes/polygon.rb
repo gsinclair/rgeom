@@ -16,11 +16,18 @@ module RGeom::Shapes
       @n = n
       @centre, @radius = circle.centre, circle.radius
       @sidelength = sidelength
+      @points = vertices.points
     end
 
-    attr_reader :n, :sidelenth, :centre, :radius
+    attr_reader :n, :sidelenth, :centre, :radius, :points
 
     def inspect; to_s(:short); end
+
+    def to_s(opt)
+      points_str = points.map { |p| p.to_s(3) }.join(' ')
+      "Polygon #{label} n:#{n} centre:#{centre} radius:#{radius}\n" \
+      "  #{points_str}"
+    end
 
   end  # class Polygon
 
@@ -28,7 +35,7 @@ module RGeom::Shapes
 
   class Polygon
     class Constructor
-      DEFAULT_SIDE = 5   # todo: revisit
+      DEFAULT_SIDE = 1   # todo: revisit
 
         # Cases:
         #   polygon :ABXYZ                  (A defined or defaults to origin)
@@ -102,7 +109,7 @@ module RGeom::Shapes
           if first_point.nil?
             270.d - theta/2    # This ensures bottom side is horizontal.
           else
-            circle.angle_at(first_point)
+            circle.angle_at(first_point) * 180 / Math::PI   # Hack hack hack!
           end
         angles = (0...n).map { |i| first_angle + i*theta }
         points = angles.map { |x| circle.angle(x) }
@@ -126,7 +133,7 @@ module RGeom::Shapes
       # Legitimate arguments: start AND (side OR base)
       def self.two_points(args={})
         start = args[:start] || p(0,0)
-        if args[:side]
+        if (side = args[:side])
           [ start, start + p(side,0) ]
         elsif args[:base]
           args.base.points

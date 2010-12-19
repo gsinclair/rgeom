@@ -78,7 +78,7 @@ module RGeom::Shapes
     end
 
     # Given a point on the circumference (ostensibly; doesn't matter if it is),
-    # return the angle from the centre.
+    # return the angle from the centre (in radians).
     def angle_at(point)
       Point.angle(centre, point)
     end

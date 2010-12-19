@@ -78,6 +78,7 @@ module RGeom
       v = Point[vector]
       Point.new(@x + v.x, @y + v.y)
     end
+    alias + translate
 
       # Returns the polar values _r_ and _t_ for this point.
     def polar
