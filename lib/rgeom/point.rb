@@ -68,8 +68,8 @@ module RGeom
 
       # Rotate by the given Angle anticlockwise about the origin.
     def rotate(th)
-      x = @x*cos(th.rad) - @y*sin(th.rad)
-      y = @x*sin(th.rad) + @y*cos(th.rad)
+      x = @x*th.cos - @y*th.sin
+      y = @x*th.sin + @y*th.cos
       Point.new(x,y)
     end
 

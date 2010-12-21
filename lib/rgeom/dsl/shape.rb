@@ -333,6 +333,9 @@ module RGeom; module DSL;
     def method_missing(symbol, *args, &block)
       case symbol.to_s
       when /^(\w+)$/
+        ## unless @values.has_key?(symbol)
+        ##   Err::DSL.construction_spec_nonexistent_parameter(symbol, params)
+        ## end
         @values[symbol]
       when /^(\w+)=$/
         @values[$1.intern] = args.first
@@ -352,6 +355,11 @@ module RGeom; module DSL;
       }
     end
 
+    # Return a hash containing the names and values of the given parameters.
+    def extract(*parameters)
+      Err.not_implemented
+    end
+
     def to_s
       values = @values.map { |k,v|
         sprintf("%s = %s", k.to_s.rjust(11), v.inspect)
@@ -361,6 +369,7 @@ module RGeom; module DSL;
           parameters: #{@parameters.inspect}
               label = #{@label.inspect}
       }.trim.tabto(0) + values
+        # todo: include fixed parameter?
     end
 
   end  # class ConstructionSpec

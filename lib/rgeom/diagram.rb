@@ -212,7 +212,7 @@ module RGeom; class Diagram;
     def arc(centre, radius, angles)
       c = map_point(centre)
       r = scale(radius)
-      a = angles.map { |x| x.in_radians }
+      a = angles.map { |x| x.rad }
       debug "(canvas) arc_negative (%3.1f, %3.1f) %3.1f (%3.3f %3.3f)" %
         [c.x, c.y, r, -a[0], -a[1]]
       @context.arc_negative(c.x, c.y, r, -a[0], -a[1])

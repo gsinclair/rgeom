@@ -1,5 +1,7 @@
-#alias rt='ruby -W0 -Ilib test/all.rb'
+# Run 'attest' with the given arguments; capture output; view in less.
+function test {
+  attest $* > attest.log
+  less -R attest.log
+}
 
-# We're using the _Windows_ Ruby so we can use Cairo
-alias rt='wruby -W0 -Ilib test/all.rb'
-alias rt='ruby -W0 -Ilib test/all.rb'
+alias view="less -R attest.log"

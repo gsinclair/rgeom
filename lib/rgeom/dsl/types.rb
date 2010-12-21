@@ -105,9 +105,15 @@ module RGeom; module DSL;
       def match(object)
         input = object
         if ::Array === input and input.size == @types.size
-          (0...@types.size).map { |i|
-            @types[i].match( input[i] )
-          }
+          match =
+            (0...@types.size).map { |i|
+              @types[i].match( input[i] )
+            }
+          if match.any? { |x| x.nil? }
+            return nil
+          else
+            return match
+          end
         else
           nil
         end

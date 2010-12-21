@@ -61,13 +61,13 @@ module RGeom::Shapes
         when /_FFFF___/
           #   square                      (no label, no parameters, nothing)
           vector = Point[0,0]
-          angle  = 0
+          angle  = 0.d
           scale  = DEFAULT_SIDE
         when /L.FFF.__/
           #   square :ABCD                (where A is defined or defaults to origin)
           #   square :ABCD, :side => 10   (where A is defined or defaults to origin)
           vector = a || Point[0,0]
-          angle = 0
+          angle = 0.d
           scale = spec.side || DEFAULT_SIDE
         when /LTTFF___/
           #   square :ABCD                (where A and B are defined)
@@ -76,7 +76,7 @@ module RGeom::Shapes
         when /_FFFFs__/
           #   square :side => 10          (label permitted; see above)
           vector = Point[0,0]
-          angle  = 0
+          angle  = 0.d
           scale  = spec.side
         when /_FFFF_b_/
           #   square :base => :CD         (no label permitted)

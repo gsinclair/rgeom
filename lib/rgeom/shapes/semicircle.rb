@@ -8,7 +8,7 @@ module RGeom::Shapes
         spec.base = nil
         spec.parameters = [:diameter]
       end
-      spec.angles = [0,180]
+      spec.angles = [0.d,180.d]
       spec.parameters += [:angles]
       Arc.construct(spec)
     end

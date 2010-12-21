@@ -19,7 +19,7 @@ module RGeom::Shapes
         pt1, pt2 = spec.from, spec.to   # Points
         angle1 = Point.relative(@centre, pt1)
         angle2 = Point.relative(@centre, pt2)
-        [angle1, angle2]
+        [angle1, angle2]    # todo: how the hell does this work?  does it?
       end
     end
 
@@ -36,7 +36,7 @@ module RGeom::Shapes
       @radius = circle.radius
       # @angle_of_radius = circle.angle_of_radius    ????
       @angles = _normalise(angles)
-      @angle_offset = circle.angle_of_specified_radius_in_degrees
+      @angle_offset = circle.angle_of_specified_radius
         # ^^^ Where the 'zero' angle really starts.
       @absolute_angles = @angles.map { |a| a + @angle_offset }
     end
@@ -62,11 +62,11 @@ module RGeom::Shapes
       # To find the bounding box, compile the list of the potential extremities
       # that actually exist on the arc, then call PointList#bounding_box on
       # those points.
-      a1, a2 = absolute_angles
+      a1, a2 = absolute_angles.map { |a| a.deg }
       range = (a1..a2)
       extremities = [0, 90, 180, 270]
       relevant_extremities = extremities.select { |a| range.include? a }
-      bounding_points = (relevant_extremities << a1 << a2).map { |angle| point(angle) }
+      bounding_points = (relevant_extremities << a1 << a2).map { |angle| point(angle.d) }
       PointList[*bounding_points].bounding_box
     end
 
@@ -93,11 +93,11 @@ module RGeom::Shapes
     def centre_angle() @angles[1] - @angles[0] end
     alias theta centre_angle
 
-    # arc(:angles => [45,190]).contains? 50     # true
-    # arc(:angles => [45,190]).contains? 40     # false
+    # arc(:angles => [45.d,190.d]).contains? 50.d     # true
+    # arc(:angles => [45.d,190.d]).contains? 40.d     # false
     def contains?(angle)
-      angle = angle % 360
-      (@angles[0]..@angles[1]).contains? angle
+      angle = angle.deg
+      @angles[0].deg <= angle  and  angle <= @angles[1].deg
     end
 
       # [310,195] becomes [-50,195].  We want the first one to be smaller than
@@ -105,11 +105,11 @@ module RGeom::Shapes
       # be <= 360 degrees.  Finally, we ensure that the angles are not too far
       # from zero by doing "mod 360" up front.
     def _normalise(angles)
-      a1, a2 = angles.map { |a| a % 360 }
+      a1, a2 = angles.map { |a| a.deg % 360 }
       while a1 > a2
         a1 -= 360
       end
-      [a1, a2]
+      [a1.d, a2.d]
     end
     private :_normalise
 

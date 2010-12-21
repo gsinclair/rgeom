@@ -6,18 +6,21 @@ module RGeom
   # @circle and @radius are required.
   module CircleArcCommon
 
-      # Returns the point on the circle at the given angle, where 0 degrees is
-      # East, as usual.
-    def point(angle)
-      angle = angle.in_radians
-      x = @centre.x + @radius * Math.cos(angle)
-      y = @centre.y + @radius * Math.sin(angle)
-      Point[x,y]
+    # Given an angle (Angle), return the point on the circumference at that
+    # angle.  (Angles start at East and go anti-clockwise, as usual.)
+    def point(theta)
+      Point.polar(radius, theta).translate(centre)
+    end
+
+    # Given a point on the circumference (ostensibly; doesn't matter if it is),
+    # return the angle from the centre (in radians).
+    def angle_at(point)
+      Point.angle(centre, point)
     end
 
     def interpolate(k)
-      a, b = @absolute_angles || [0,360]
-      angle = a + k*(b-a)
+      a, b = @absolute_angles || [0.d,360.d]
+      angle = a + (b-a)*k
       point(angle)
     end
 

@@ -39,7 +39,7 @@ D "Diagrams" do
     TESTS = []
     TESTS << { :desc => "Triangle",   :code => "triangle" }
     TESTS << { :desc => "Circle",     :code => "circle" }
-    TESTS << { :desc => "Arc",        :code => "arc(:angles => [3,189])" }
+    TESTS << { :desc => "Arc",        :code => "arc(:angles => [3.d,189.d])" }
     TESTS << { :desc => "Semicircle", :code => "semicircle" }
 
     TESTS.each do |test|

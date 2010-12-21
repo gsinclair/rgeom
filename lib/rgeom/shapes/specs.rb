@@ -104,7 +104,7 @@ shape :polygon, :label => "3+",
     n: number, diameter: segment
     n: number, centre: point=origin, radius: length
     n: number, centre: point=origin, diameter: length
-    base: length
+    side: length
   }
 
 shape :segment, :label => :AB,

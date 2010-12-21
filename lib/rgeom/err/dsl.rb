@@ -25,5 +25,13 @@ class RGeom::Err
       }
     end
 
+    def construction_spec_nonexistent_parameter(symbol, parameters)
+      _raise SpecificationError, %{
+        You attempted to access parameter '#{symbol}' in a ConstructionSpec object,
+        but it does not exist.  Parameters are:
+          #{parameters.join(', ')}
+      }
+    end
+
   end  # class << DSL
 end  # class RGeom::Err

@@ -17,7 +17,7 @@ D "Segment" do
         Eq s.p,      p(3,1)
         Eq s.q,      p(-2,-4.5)
         Ft s.length, 7.433034374
-        Ft s.angle,  -2.308611387
+        Eq s.angle,  -2.308611387.r
         Id s,        @register.by_label(:segment, :AB)
         Id s,        Segment[0]
       end
@@ -30,7 +30,7 @@ D "Segment" do
         Eq s.q,      p(-4,-10)
         Eq s.end,    p(-4,-10)
         Ft s.length, 5.85234995535981
-        Ft s.angle,  -1.9195673303788
+        Eq s.angle,  -1.9195673303788.r
         Id s,        Segment[0]
       end
     end

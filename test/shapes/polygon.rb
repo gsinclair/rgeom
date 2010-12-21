@@ -7,7 +7,6 @@ D "Polygon" do
   end
 
   D "polygon(:LMNOP) -- basic pentagon" do
-    debugger
     poly = polygon(:LMNOP)
     poly.tap do |s|
       T :vertices, s, %w(L 0 0    M 1 0   N 1.30902  0.95106
@@ -26,15 +25,15 @@ D "Polygon" do
     end
   end
 
-  D "polygon(:n => 6, :base => 2.5)" do
-    polygon(:n => 6, :base => 2.5).tap do |s|
+  D "polygon(:n => 6, :side => 2.5)" do
+    polygon(:n => 6, :side => 2.5).tap do |s|
       T :vertices, s, %w(_ 0.0 0.0       _ 2.5 0.0       _  3.75 2.16505
                          _ 2.5 4.33013   _ 0.0 4.33013   _ -1.25 2.16506)
     end
   end
 
   D "polygon(:n => 3, :base => :AX)" do
-    point :X => p(5.977638455,0.6343919698)
+    points :X => p(5.977638455,0.6343919698)
     reference_triangle = _triangle(:equilateral, :base => :AX)
     polygon(:n => 3, :base => :AX).tap do |s|
       t = reference_triangle
@@ -52,7 +51,7 @@ D "Polygon" do
 
     # Same polygon as last test, but constructed differently.
   D "polygon(:n => 4, :radius => :AX)" do
-    point :X => p(5,1)
+    points :X => p(5,1)
     polygon(:n => 4, :radius => :AX).tap do |s|
       T :vertices, s, %(_ 1.58579 -0.41421   _ 4.41421 -0.41421
                         _ 4.41421  2.41421   _ 1.58579  2.41421)
@@ -74,8 +73,8 @@ D "Polygon" do
     end
   end
 
-  D "polygon(:CWXYZ, :base => 10) with existing C" do
-    polygon(:CWXYZ, :base => 10).tap do |s|
+  D "polygon(:CWXYZ, :side => 10) with existing C" do
+    polygon(:CWXYZ, :side => 10).tap do |s|
       T :vertices, s,
         %w(C 7.0 2.0     W 17.0 2.0     X 20.09017 11.51057
                                         Y 12.0     17.38842     Z 3.90983 11.51057)

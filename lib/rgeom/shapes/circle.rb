@@ -5,7 +5,7 @@ module RGeom::Shapes
     # *------------------* Circle construction code *------------------* 
 
     def self.construct(spec)
-      angle = 0            # Angle of radius; think circle(:radius => :AB)
+      angle = 0.d          # Angle of radius; think circle(:radius => :AB)
                            # TODO: when Circle < Arc, this won't be necessary
       centre, radius =
         case spec.parameters
@@ -27,7 +27,7 @@ module RGeom::Shapes
 
     # *------------------* General circle code *------------------* 
 
-    def initialize(label, centre, radius, angle=0)
+    def initialize(label, centre, radius, angle=0.d)
       super(nil, label)
       @centre, @radius = centre, radius
       @angle_of_radius = angle
@@ -73,23 +73,10 @@ module RGeom::Shapes
     # Since Arc relies on Circle to understand the <tt>:diameter => :AC</tt>
     # part, that information is lost by the time it gets to Arc.  That's why
     # this method exists.
-    def angle_of_specified_radius_in_degrees
-      @angle_of_radius.in_degrees
+    def angle_of_specified_radius
+      @angle_of_radius
     end
 
-    # Given a point on the circumference (ostensibly; doesn't matter if it is),
-    # return the angle from the centre (in radians).
-    def angle_at(point)
-      Point.angle(centre, point)
-    end
-
-    # Given an angle (Angle), return the point on the circumference at that
-    # angle.
-    def angle(theta)
-      Point.polar(radius, theta).translate(centre)
-      # Better would be: centre + r(radius, theta)
-      # 'r' for 'polar'
-    end
   end  # class Circle
 end  # module RGeom::Shapes
 

@@ -3,13 +3,6 @@ module RGeom
 
   module Support
 
-    # TODO: Implement debuglog gem!
-    module ::Kernel
-      def debug(msg)
-        :no_op
-      end
-    end
-
     class Label; end
 
     module ::Kernel

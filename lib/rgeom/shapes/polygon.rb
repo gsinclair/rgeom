@@ -109,10 +109,10 @@ module RGeom::Shapes
           if first_point.nil?
             (270 - theta/2).d    # This ensures bottom side is horizontal.
           else
-            circle.angle_at(first_point).deg
+            circle.angle_at(first_point)
           end
-        angles = (0...n).map { |i| first_angle + i*theta.d }
-        points = angles.map { |x| circle.angle(x) }
+        angles = (0...n).map { |i| first_angle + (i*theta).d }
+        points = angles.map { |x| circle.point(x) }
       end
 
       # Given the first two points of the polygon, construct the circle in which
@@ -121,7 +121,7 @@ module RGeom::Shapes
         # Form an isosceles triangle based on (ab) with the angle determined by
         # the number of sides in the polygon.  The apex of this triangle is the
         # centre of the circle/polygon.
-        base_angle = 90.0 * (n-2) / n
+        base_angle = (90.0 * (n-2) / n).d
         t = _triangle(:isosceles, base: seg(a,b), angle: base_angle)
         centre = t.apex
         radius = Point.distance(a, centre)
