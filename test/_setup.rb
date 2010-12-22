@@ -14,9 +14,9 @@ Attest.custom :circle, {
   :parameters  => [ [:circle, Circle], [:values, Array] ],
   :run => proc {
     x, y, r, label = values
-    test('x')     { Ft circle.centre.x,  x            } 
-    test('y')     { Ft circle.centre.y,  y            }
-    test('r')     { Ft circle.radius,    r            }
+    test('x')     { Ft circle.centre.x,  x, 0.001     } 
+    test('y')     { Ft circle.centre.y,  y, 0.001     }
+    test('r')     { Ft circle.radius,    r, 0.001     }
     test('label') { Eq circle.label,     Label[label] } 
   }
 }
@@ -33,9 +33,9 @@ Attest.custom :arc, {
   :parameters  => [ [:arc, Arc], [:values, Array] ],
   :run => proc {
     x, y, r, label, a1, a2 = values
-    test('x')      { Ft arc.centre.x, x            }
-    test('y')      { Ft arc.centre.y, y            }
-    test('r')      { Ft arc.radius,   r            }
+    test('x')      { Ft arc.centre.x, x, 0.001     }
+    test('y')      { Ft arc.centre.y, y, 0.001     }
+    test('r')      { Ft arc.radius,   r, 0.001     }
     test('label')  { Eq arc.label,    Label[label] }
     test('angles') { Eq arc.angles,   [a1,a2]      }
   }
@@ -79,8 +79,8 @@ Attest.custom :point, {
   :description => "Point equality",
   :parameters => [ [:point1, Point], [:point2, Point] ],
   :run => proc {
-    test('x') { Ft point1.x, point2.x }
-    test('y') { Ft point1.y, point2.y }
+    test('x') { Ft point1.x, point2.x, 0.001 }
+    test('y') { Ft point1.y, point2.y, 0.001 }
   }
 }
 

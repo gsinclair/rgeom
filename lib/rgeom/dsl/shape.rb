@@ -356,8 +356,12 @@ module RGeom; module DSL;
     end
 
     # Return a hash containing the names and values of the given parameters.
-    def extract(*parameters)
-      Err.not_implemented
+    def extract_parameters(*parameters)
+      Hash.new.tap { |h|
+        parameters.each do |p|
+          h[p] = @values[p] if @values.has_key? p
+        end
+      }
     end
 
     def to_s

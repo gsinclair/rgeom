@@ -19,6 +19,22 @@ D "VertexList" do
         VertexList.new(5, [:X, :Y, :Z], [p(1,1), p(5,1), p(3,3)])
       end
     end
+    D "register" do
+      VertexList.new(3, [:X, :Y, :Z], [p(1,1), p(5,1), p(3,3)]).tap do |vl|
+        vl.register
+        Eq @register[:X], p(1,1)
+        Eq @register[:Y], p(5,1)
+        Eq @register[:Z], p(3,3)
+      end
+      @register.clear!
+      VertexList.new(4, [:M, :N, :_, :Z], [p(0,1), p(0,2), p(0,3), p(0,4)]).tap do |vl|
+        Eq vl.register, vl
+        Eq @register[:M], p(0,1)
+        Eq @register[:N], p(0,2)
+        Eq @register[:Z], p(0,4)
+        Eq @register.npoints, 3    # Want to ensure that :_ point isn't registered.
+      end
+    end
   end
 
   D "default label (all vertices _)" do
@@ -70,7 +86,7 @@ D "VertexList" do
         Eq @register[:Z], nil
         Eq vl.mask, "FFF"
 
-        vl.accommodate [p(4,3), p(1,0), p(5,5)]
+        N vl.accommodate [p(4,3), p(1,0), p(5,5)]
         Eq vl[0], p(4,3)
         Eq vl[1], p(1,0)
         Eq vl[2], p(5,5)

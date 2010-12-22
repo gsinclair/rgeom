@@ -58,14 +58,14 @@ module RGeom::Shapes
         # side: length
         label = spec.label
         n, centre, radius, sidelength, points = nil
-        
+
         ##
         ## If any of :centre, :radius, :diameter are given, we construct the
         ## polygon based on a circle.
         ##
         circle_params = spec.extract_parameters(:centre, :radius, :diameter)
                               # todo: ^^^ implement
-        if circle_params
+        unless circle_params.empty?
           circle = _circle(circle_params)
           n = spec.n || raise("...")
           points = determine_points_from_circle(circle, n)
@@ -95,7 +95,7 @@ module RGeom::Shapes
         end
 
         sidelength = Point.distance( points[0], points[1] )
-        vertices = VertexList.new(n, label, points)
+        vertices = VertexList.new(n, label, points).register
         Polygon.new(n, circle, sidelength, vertices)
       end  # def Constructor.construct
 
@@ -136,7 +136,7 @@ module RGeom::Shapes
         if (side = args[:side])
           [ start, start + p(side,0) ]
         elsif args[:base]
-          args.base.points
+          args[:base].points
         else
           raise "..."
         end
@@ -175,16 +175,17 @@ module RGeom::Shapes
         if side.not_nil?
           a, b =
             case mask
-            when /^f*$/     # no points defined
+            when /^F*$/     # no points defined
               two_points(side)
-            when /^tf*$/    # only first point defined
+            when /^TF*$/    # only first point defined
               _a = label.point(0)
               _b = _a + p(side, 0)
               [ _a, _b ]
-            when /^ttf*/    # first two points defined
+            when /^TTF*/    # first two points defined
               warn "Ignoring spec: side=#{side} -- conflicts with label #{label}"
             else
-              Err.invalid_spec("...")
+              Err.invalid_spec(:polygon, spec,
+                           "Too many points defined in #{label}: mask = #{mask}")
             end
           return n, a, b
         end

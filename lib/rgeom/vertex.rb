@@ -123,6 +123,22 @@ module RGeom
       VertexList.new(n, names, points)
     end
 
+      # If a VertexList is created with labels _and_ points already in place, the
+      # #register ensures all those points are put in the register.  This came
+      # about because of Polygon.  Other shapes used #accomodate to fill in the
+      # missing information.  With Polygon, however, it is more convenient to
+      # first determine all the points, then register them.  That may be because
+      # it's not known in advance how many points there are.
+      #
+      # todo: see if the Polygon approach makes sense for other shapes
+      # todo: see if the register and accommodate code can be combined
+    def register
+      @vertices.each do |v|
+        @@register[v.name] = v.point
+      end
+      self
+    end
+
       # A vertex list may have been created with some of the points being +nil+.  That's
       # no good.  This method accepts an array of points that can slot in to this vertex
       # list.  An error is raised if a vertex is already properly defined and an attempt
@@ -134,6 +150,7 @@ module RGeom
       (0...points.size).each do |i|
         self[i] = points[i]
       end
+      nil
     end
 
       # _index_ must be a number.
