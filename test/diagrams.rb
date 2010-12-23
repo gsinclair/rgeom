@@ -96,5 +96,41 @@ D "Diagrams" do
     end
   end
 
+  D "dashed arc" do
+    wrap_test "dashed-arc" do
+      (1..10).each do |x|
+        r = sqrt(10*x)            # set the radius for this iteration
+        a1, a2 = 0.d, 1.d
+        inc = 2.d
+        until a2 > 321.d          # 303..321 will be the last arc in this loop
+          arc angles: [a1,a2], radius: r
+          a1 = a2 + inc
+          inc += 1.d
+          a2 = a1 + inc
+        end
+        a = 321.d
+        [9, 4.5, 2.25, 1.125, 0.5625].each do |i|
+          # skip i degrees (a bit more)
+          a1 = (a += i.d*1.1)
+          # paint i degrees (a bit less)
+          a2 = (a += i.d*0.9)
+          arc angles: [a1,a2], radius: r
+        end
+      end
+    end
+  end
+
+  D "random shapes in circle" do
+    wrap_test "random-shapes-in-circle" do
+      c = _circle
+      (0..35).each do |i|
+        theta = (10*i).d
+        point = c.point(theta)   # centre of little shape
+        n = rand(15)+3           # number of sides
+        polygon n: n, centre: point, radius: 0.05
+      end
+    end
+  end
+
 end if defined? Cairo
 
