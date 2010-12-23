@@ -79,22 +79,6 @@ shape :semicircle, :label => :K,
     radius: segment
   }
 
-  # We don't know how many vertices a polygon has.
-  # Perhaps we'll have to implement Shape.valid_label?(label).
-  # (That would give us Triangle.valid_label?, Polygon.valid_label? etc.)
-  
-# Polygon use cases outlined in the test code:
-#
-#   polygon(:ABXYZ) 
-#   polygon(:n => 6, :side => 2.5) 
-#   polygon(:n => 3, :base => :AX) 
-#   polygon(:n => 4, :centre => :A, :radius => 2) 
-#   polygon(:n => 4, :radius => :AX) 
-#   polygon(:n => 3, :diameter => :AC) 
-#   polygon(:MNP, :n => 3, :diameter => :AC) 
-#   polygon(:CWXYZ, :side => 10) with existing C 
-#   polygon(:CBHI) with existing C and B 
-
 shape :polygon, :label => "3+",
   :parameters => %{
     -

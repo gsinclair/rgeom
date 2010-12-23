@@ -1,5 +1,19 @@
 [This file functions as a development log.]
 
+23 Dec 2010:
+  Polygons implemented -- commits 3966b977 to 286d5dce1
+  This took a lot of work because several inner details needed to be
+  cleaned up, for some reason.
+  Much future work to comtemplate.  Next stop: shape transformations
+  (rotate, translate, scale, etc.).  Then: think about Postscript as a
+  backend instead of (or in addition to) Cairo.
+
+15 Apr 2010:
+  DSL implemented.  Commit aefec471b956195 has many gory details, as
+  well as pointers for future work.  The example code in the 19 Jan
+  entry below looks correct still.  All the inbuilt shape
+  specifications can be seen in lib/rgeom/shapes/specs.rb
+
 19 Jan 2010:
   Finishing work on spec_label branch and merging it into master.
   Labels work and provide basic encapsulation of labels like :ABC.
