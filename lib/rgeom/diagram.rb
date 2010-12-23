@@ -72,7 +72,7 @@ module RGeom
         when :segment
           s = row.shape
           canvas.line(s.p, s.q)
-        when :triangle
+        when :triangle, :square, :polygon
           t = row.shape
           canvas.polyline(t.points, :closed)
         when :circle
@@ -81,11 +81,8 @@ module RGeom
         when :arc
           a = row.shape
           canvas.arc(a.centre, a.radius, a.absolute_angles)
-        when :square
-          s = row.shape
-          canvas.polyline(s.points, :closed)
         else
-          raise "Unknown drawing object type: #{label.inspect}"
+          raise "Unknown drawing object type: #{row.category}"
         end
       end
       canvas.render(@filename)
