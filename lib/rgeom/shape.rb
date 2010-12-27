@@ -159,6 +159,29 @@ module RGeom
       end
     end
 
+      # note: this is an inefficient implementation
+    def each_side
+      nsides = points.size
+      (1..nsides).each do |i|
+        yield side(i)
+      end
+    end
+
+      # e.g. a Triange has side(1), side(2) and side(3), each of which is a
+      # segment.  The sides are in construction order: anticlockwise starting
+      # with the "base".
+    def side(n)
+      # side(1) is points[0] to points[1].
+      points = points()
+      unless Integer === n and (1..points.size) === n
+        raise ArgumentError, "n out of range (1..#{points.size})"
+      end
+      points << points.first    # needed to get side(n)
+      p1 = points[n-1]
+      p2 = points[n]
+      Segment.simple(p1, p2)
+    end
+
       # Default implementation of bounding box which will be sufficient for most
       # shapes.
     def bounding_box

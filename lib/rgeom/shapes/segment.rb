@@ -18,7 +18,12 @@ module RGeom::Shapes
     def initialize(vertices)
       super(vertices)
       @p, @q = vertices.points
-      # TODO Error if @p or @q is nil.
+      # todo: Error if @p or @q is nil.  (Done below; good enough? SpecificationError?)
+      if @p.nil?
+        raise ArgumentError, "starting point of segment is nil"
+      elsif q.nil?
+        raise ArgumentError, "finishing point of segment is nil"
+      end
       @length, @angle = Point.relative(p, q).polar
     end
 

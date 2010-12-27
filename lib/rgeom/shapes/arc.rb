@@ -5,7 +5,6 @@ module RGeom::Shapes
     # *------------------* Arc construction code *------------------* 
 
     def self.construct(spec)
-      debug spec
       circle_spec = spec.sans(:angles, :from, :to)
       circle = Circle.construct(circle_spec)
       angles = _determine_arc_angles(spec)

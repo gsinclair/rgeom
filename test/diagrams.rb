@@ -13,11 +13,11 @@ D "Diagrams" do
     RGeom::Register.instance.clear!
   end
 
-  def wrap_test(name)
+  def wrap_test(name, width=nil)
     filename = "out/#{name}.png"
     F { File.exist? filename }
     yield
-    render filename
+    render filename, width: width
     T { File.exist? filename }
   end
 
@@ -128,6 +128,56 @@ D "Diagrams" do
         point = c.point(theta)   # centre of little shape
         n = rand(15)+3           # number of sides
         polygon n: n, centre: point, radius: 0.05
+      end
+    end
+  end
+
+  D "Koch snowflake (1)" do
+    def middle_third(segment)
+      p1 = segment.interpolate(1.0/3)
+      p2 = segment.interpolate(2.0/3)
+      Segment.simple(p1,p2)
+    end
+    def snowflake(segment, depth)
+      s = middle_third(segment).reverse
+      t = triangle :equilateral, base: s
+      if depth > 0
+        snowflake t.side(2), depth-1
+        snowflake t.side(3), depth-1
+      end
+    end
+    wrap_test "koch-snowflake" do
+      triangle(:equilateral).each_side do |s|
+        snowflake(s, 5)
+      end
+    end
+  end
+
+  D "Koch snowflake (2)" do
+    def thirds(segment)
+      p0 = segment.interpolate(0)
+      p1 = segment.interpolate(1.0/3)
+      p2 = segment.interpolate(2.0/3)
+      p3 = segment.interpolate(1)
+      Segment.simple(p1,p2)
+    end
+    def snowflake(segment_, depth)
+      s1 = segment_
+      s2 = middle_third(s1)
+      # Draw the two visible parts of the segment
+      segment(:start => s1.p, :end => s2.p)
+      segment(:start => s2.q, :end => s1.q)
+      t = _triangle :equilateral, base: s2.reverse
+      if depth > 0
+        snowflake t.side(2), depth-1
+        snowflake t.side(3), depth-1
+      else
+        segment(:start => s2.p, :end => s2.q)
+      end
+    end
+    wrap_test "koch-snowflake-2", 5000 do
+      _triangle(:equilateral).each_side do |s|
+        snowflake(s, 7)
       end
     end
   end
