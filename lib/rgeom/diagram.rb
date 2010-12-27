@@ -129,6 +129,7 @@ module RGeom; class Diagram;
       # the diagram was 2.5 units wide, the image would be 125 pixels wide.
       #
     def initialize(args={})
+      debug ""
       debug "Canvas.new :x => #{args[:x]}, :y => #{args[:y]}, :width => #{args[:width]}"
       xmin = Float(args[:x].begin)
       xmax = Float(args[:x].end)
@@ -165,7 +166,7 @@ module RGeom; class Diagram;
       # We map them onto the canvas coordinate system.
     def line(from, to)
       a, b = map_points(from, to)
-      debug "(canvas) line #{a} #{b} "
+      # debug "(canvas) line #{a} #{b} "
       @context.move_to(a.x, a.y)
       @context.line_to(b.x, b.y)
       @context.stroke
@@ -201,7 +202,7 @@ module RGeom; class Diagram;
     def circle(centre, radius)
       c = map_point(centre)
       r = scale(radius)
-      debug "(canvas) circle (%3.1f, %3.1f) %3.1f" % [c.x, c.y, r]
+      # debug "(canvas) circle (%3.1f, %3.1f) %3.1f" % [c.x, c.y, r]
       @context.circle(c.x, c.y, r)
       @context.stroke
     end
@@ -210,8 +211,8 @@ module RGeom; class Diagram;
       c = map_point(centre)
       r = scale(radius)
       a = angles.map { |x| x.rad }
-      debug "(canvas) arc_negative (%3.1f, %3.1f) %3.1f (%3.3f %3.3f)" %
-        [c.x, c.y, r, -a[0], -a[1]]
+      # debug "(canvas) arc_negative (%3.1f, %3.1f) %3.1f (%3.3f %3.3f)" %
+      #   [c.x, c.y, r, -a[0], -a[1]]
       @context.arc_negative(c.x, c.y, r, -a[0], -a[1])
         # Cairo treats angles as increasing clockwise; we use mathematical
         # convention of anticlockwise.  Therefore we negate our angles when
